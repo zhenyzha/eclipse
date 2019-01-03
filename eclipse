@@ -25,7 +25,7 @@ cd "${oldpwd}"
 ICON_NAME=icon 
 TMP_DIR=`mktemp --directory` 
 DESKTOP_FILE=$TMP_DIR/clipse-juno.desktop 
-cat << EOF > $DESKTOP_FILE 
+cat < EOF > $DESKTOP_FILE 
 [Desktop Entry] 
 Version=1.0 
 Encoding=UTF-8 
