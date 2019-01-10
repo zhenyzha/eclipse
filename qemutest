@@ -1,0 +1,28 @@
+/usr/libexec/qemu-kvm \
+-name 'avocado-vt-vm1'  \
+-sandbox off  \
+-machine pc  \
+-nodefaults  \
+-vga cirrus  \
+-chardev socket,id=qmp_id_catch_monitor,path=/var/tmp/monitor-catch_monitor0,server,nowait \
+-mon chardev=qmp_id_catch_monitor,mode=control \
+-device pvpanic,ioport=0x505,id=id6KSSzk  \
+-chardev socket,id=serial_id_serial0,path=/var/tmp/serial-serial0,server,nowait \
+-device isa-serial,chardev=serial_id_serial0  \
+-chardev socket,id=seabioslog_id_20180626-083230-Om7lITnZ,path=/var/tmp/seabiosO,server,nowait \
+-device isa-debugcon,chardev=seabioslog_id_20180626-083230-Om7lITnZ,iobase=0x402 \
+-device nec-usb-xhci,id=usb1,bus=pci.0,addr=0x3 \
+-device virtio-scsi-pci,id=virtio_scsi_pci0,bus=pci.0,addr=0x4 \
+-drive id=drive_image1,if=none,snapshot=off,aio=threads,cache=none,format=qcow2,file=/home/zhenyzha/RHEL8.img \
+-device scsi-hd,id=image1,drive=drive_image1 \
+-device virtio-net-pci,mac=9a:8e:8f:90:91:92,id=idZiNCIw,vectors=4,netdev=idDRE1on,bus=pci.0,addr=0x5 \
+-netdev tap,id=idDRE1on,vhost=on \
+-m 8192  \
+-smp 8,cores=4,threads=1,sockets=2  \
+-device usb-tablet,id=usb-tablet1,bus=usb1.0,port=1  \
+-device usb-kbd,id=usb-kbd1,bus=usb1.0,port=2  \
+-vnc :0  \
+-rtc base=utc,clock=host,driftfix=slew  \
+-boot menu=off,strict=off,order=cdn,once=c \
+-enable-kvm \
+-monitor stdio
