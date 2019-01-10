@@ -1,7 +1,7 @@
 /usr/libexec/qemu-kvm \
 -name 'avocado-vt-vm1'  \
 -sandbox off  \
--machine pc  \
+-machine pc  \(-M pseries,max-cpu-compat=power8)
 -nodefaults  \
 -vga cirrus  \
 -chardev socket,id=qmp_id_catch_monitor,path=/var/tmp/monitor-catch_monitor0,server,nowait \
