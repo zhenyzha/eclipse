@@ -48,3 +48,27 @@
     -blockdev driver=file,cache.direct=off,cache.no-flush=on,filename=data.qcow2,node-name=data_disk \
     -blockdev driver=qcow2,node-name=disk1,file=data_disk \
     -device scsi-hd,drive=disk1,bus=virtio_scsi_pci1.0,id=data_disk \
+    
+ blockdev usage: (it's a must for RHEL8 testing)
+
+    luks:
+
+    -object secret,id=sec0,data=base -blockdev driver=file,cache.direct=off,cache.no-flush=on,filename=base.luks,node-name=my_file 
+    -blockdev driver=luks,node-name=disk,file=my_file,key-secret=sec0
+
+    qcow2:
+
+    -blockdev driver=file,cache.direct=off,cache.no-flush=on,filename=base.qcow2,node-name=my_file 
+    -blockdev driver=qcow2,node-name=my,file=my_file 
+
+    raw:
+
+    -blockdev driver=file,cache.direct=off,cache.no-flush=on,filename=base.img,node-name=my_file 
+    -blockdev driver=raw,node-name=disk,file=my_file
+
+    scsi cd(file node and raw node) and readonly must be on: 
+
+    -blockdev driver=file,cache.direct=off,cache.no-flush=on,filename=winutils.iso,node-name=cd_file,read-only=on 
+    -blockdev driver=raw,node-name=cd,file=cd_file,read-only=on
+
+
