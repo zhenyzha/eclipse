@@ -35,8 +35,6 @@ blockdev
 -device virtio-balloon-pci,id=balloon0,bus=pci.0,addr=0x5 \
 -device virtio-net-pci,mac=00:16:3e:22:22:22,id=testid,vectors=4,netdev=idDRE1on,bus=pci.0,addr=0x6 \ 半虚拟网络
 -netdev tap,id=idDRE1on,vhost=on \ 
--device virtio-blk-pci,scsi=off,bus=pci.0,addr=0x6,drive=drive-virtio-disk0,id=virtio-disk0 \   
--drive file=fake.img,format=qcow2,if=none,id=drive-virtio-disk0,cache=writeback \
 -blockdev driver=file,cache.direct=off,cache.no-flush=on,filename=data.qcow2,node-name=my_file \  磁盘内容
 -blockdev driver=qcow2,node-name=my,file=my_file \
 -blockdev driver=file,cache.direct=off,cache.no-flush=on,filename=data2.qcow2,node-name=my_file2 \  磁盘内容
