@@ -27,23 +27,25 @@
 -enable-kvm \
 -monitor stdio
 
-
+blockdev
 #!/bin/bash
 #RHEL8-94701 - [virtual block][virtio scsi] online enlarge and shrink virtio-scsi data disk     
 /usr/libexec/qemu-kvm -enable-kvm -m 2048 -smp 4 \
 -device virtio-scsi-pci,id=virtio_scsi_pci0,addr=0x4 \
 -device virtio-balloon-pci,id=balloon0,bus=pci.0,addr=0x5 \
 -device virtio-net-pci,mac=00:16:3e:22:22:22,id=testid,vectors=4,netdev=idDRE1on,bus=pci.0,addr=0x6 \ 半虚拟网络
--netdev tap,id=idDRE1on,vhost=on \  
+-netdev tap,id=idDRE1on,vhost=on \ 
+-device virtio-blk-pci,scsi=off,bus=pci.0,addr=0x6,drive=drive-virtio-disk0,id=virtio-disk0 \   
+-drive file=fake.img,format=qcow2,if=none,id=drive-virtio-disk0,cache=writeback \
 -blockdev driver=file,cache.direct=off,cache.no-flush=on,filename=data.qcow2,node-name=my_file \  磁盘内容
 -blockdev driver=qcow2,node-name=my,file=my_file \
 -blockdev driver=file,cache.direct=off,cache.no-flush=on,filename=data2.qcow2,node-name=my_file2 \  磁盘内容
 -blockdev driver=qcow2,node-name=my2,file=my_file2 \
--device scsi-hd,drive=my,bus=virtio_scsi_pci0.0,bootindex=0 \    磁盘框架指定盘片
+-device scsi-hd,drive=my,bus=virtio_scsi_pci0.0,bootindex=0 \    磁盘框架指定盘片(驱动)
 -device scsi-hd,drive=my2,bus=virtio_scsi_pci0.0,bootindex=1 \
 -cdrom /mnt/isos/linux/RHEL-8.0-20181220.1-ppc64le-dvd1.iso \
 -device usb-tablet \     固定鼠标不漂移
--vnc :02 \
+-vnc :03 \
 -serial stdio \   在当前cmd显示guest窗口
 
 
@@ -74,5 +76,21 @@
 
     -blockdev driver=file,cache.direct=off,cache.no-flush=on,filename=winutils.iso,node-name=cd_file,read-only=on 
     -blockdev driver=raw,node-name=cd,file=cd_file,read-only=on
+
+virtio-scsi
+-device virtio-scsi-pci,bus=pci.0,addr=0x07,id=scsi-pci-1 \      (scsi模式可以有256个target，每个target可以有16384个lun)
+-drive file=/home/zhenyzha/data2.qcow2,format=qcow2,if=none,aio=native,cache=none,media=disk,werror=stop,rerror=stop,id=drive-1 \
+-device scsi-hd,bus=scsi-pci-1.0,id=scsi-hd-1,drive=drive-1,channel=0,scsi-id=0,lun=1,bootindex=0 \
+-drive file=/home/zhenyzha/data3.img,format=qcow2,if=none,aio=native,cache=none,media=disk,werror=stop,rerror=stop,id=drive-2 \
+-device scsi-hd,bus=scsi-pci-1.0,id=scsi-hd-2,drive=drive-2,channel=0,scsi-id=0,lun=2,bootindex=1 \
+，
+virtio-blk                                                       （blk模式PCI：存储设备 1：1对应，PCI总线32条最多32个磁盘占用）
+-device virtio-blk-pci,scsi=off,bus=pci.0,addr=0x4,drive=drive-virtio0-0-0,id=virtio0-0-0,bootindex=0 \
+-drive file=/home/zhenyzha-nfs/test1/1.img,if=none,id=drive-virtio0-0-0,media=disk,werror=stop,rerror=stop,cache=none,format=raw \
+-device virtio-blk-pci,scsi=off,bus=pci.0,addr=0x5,drive=drive-virtio0-0-1,id=virtio0-0-1,bootindex=1 \
+-drive file=/home/zhenyzha-nfs/test1/2.img,if=none,id=drive-virtio0-0-1,media=disk,werror=stop,rerror=stop,cache=none,format=raw \
+
+
+
 
 
