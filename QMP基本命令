@@ -1,0 +1,32 @@
+{ "execute": "qmp_capabilities" }
+{ "return": {}}  返回
+
+{ "execute": "query-status" }   查询虚拟机状态
+当虚拟机正常运行时，会返回如下指令：
+{"return": {"status": "running", "singlestep": false, "running": true}}   
+当虚拟机处于热迁移的监听状态时，返回如下指令：
+{"return": {"status": "inmigrate", "singlestep": false, "running": false}}
+
+
+
+{"io-status": "ok", "device": "drive-scsi-disk0", "locked": false, "removable": false, "inserted": 
+{"iops_rd": 0, "detect_zeroes": "off", "image": {"virtual-size": 32212254720, "filename": "guest.qcow2", \
+"cluster-size": 65536, "format": "qcow2", "actual-size": 3109359616, "format-specific": \
+{"type": "qcow2", "data": {"compat": "1.1", "lazy-refcounts": false, "refcount-bits": 16, "corrupt": false}}, \
+"dirty-flag": false}, "iops_wr": 0, "ro": false, "node-name": "#block124", "backing_file_depth": 0, "drv": "qcow2", \
+"iops": 0, "bps_wr": 0, "write_threshold": 0, "encrypted": false, "bps": 0, "bps_rd": 0, "cache": \
+{"no-flush": false, "direct": true, "writeback": true}, "file": "guest.qcow2", "encryption_key_missing": false}, 
+"qdev": "scsi-disk0", "type": "unknown"},   注释： type 前面的就是device id
+
+下面为热拔出一块磁盘：
+{"execute":"device_del","arguments":{"id":"scsi-hd-1"}} 
+{"execute":"device_del","arguments":{"id":"scsi-hd-2"}}
+{"execute":"device_del","arguments":{"id":"scsi-hd-3"}}  
+{"execute":"device_del","arguments":{"id":"scsi-disk1"}} 
+
+
+{"execute":"__com.redhat_drive_add", "arguments": {"file":"data.raw","format":"raw","id":"drive-scsi-disk1"}}
+{"execute":"device_add","arguments":{"driver":"virtio-scsi-pci","id":"scsi1","num_queues":"4"}}
+{"execute":"device_add","arguments":{"driver":"scsi-hd","drive":"drive-scsi-disk1","id":"scsi-disk1"}}
+
+{"execute":"device_add","arguments":{"driver":"scsi-hd","drive":"drive-1","id":"drive-1"}}
