@@ -44,6 +44,7 @@ blockdev
 -cdrom /mnt/isos/linux/RHEL-8.0-20181220.1-ppc64le-dvd1.iso \
 -device usb-tablet \     固定鼠标不漂移
 -vnc :03 \
+-qmp tcp:0:4441,server,nowait \   开启qmp, telnet localhost 4441
 -serial stdio \   在当前cmd显示guest窗口
 
 
