@@ -30,7 +30,7 @@
 blockdev
 #!/bin/bash
 #RHEL8-94701 - [virtual block][virtio scsi] online enlarge and shrink virtio-scsi data disk     
-/usr/libexec/qemu-kvm -enable-kvm -m 2048 -smp 4 \
+/usr/libexec/qemu-kvm -enable-kvm -m 2048 -smp 4,cores=4 \
 -device virtio-scsi-pci,id=virtio_scsi_pci0,addr=0x4 \
 -device virtio-balloon-pci,id=balloon0,bus=pci.0,addr=0x5 \
 -device virtio-net-pci,mac=00:16:3e:22:22:22,id=testid,vectors=4,netdev=idDRE1on,bus=pci.0,addr=0x6 \ 半虚拟网络
