@@ -40,3 +40,34 @@ BRIDGE_IFNAME='switch'
 
 _setup_bridge
 _chk_bridge_dev_ip
+
+
+
+
+
+
+
+vim /etc/qemu-ifup
+#!/bin/sh
+set -x
+
+switch=switch
+
+if [ -n "$1" ];then
+        #tunctl -u `whoami` -t $1
+        ip tuntap add $1 mode tap user `whoami`
+        ip link set $1 up
+        sleep 0.5s
+        #brctl addif $switch $1
+        ip link set $1 master $switch
+        exit 0
+else
+        echo "Error: no interface specified"
+        exit 1
+fi
+
+vim /etc/qemu-ifdown
+#!/bin/sh
+switch=switch
+ip link set \$1 down
+ip link set dev \$1 nomaster
