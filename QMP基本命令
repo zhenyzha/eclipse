@@ -10,6 +10,7 @@ telnet localhost 4441
 {"return": {"status": "inmigrate", "singlestep": false, "running": false}}
 
 "ctrl + ]" quit 退出
+reset  消除乱码
 
 {"io-status": "ok", "device": "drive-scsi-disk0", "locked": false, "removable": false, "inserted": 
 {"iops_rd": 0, "detect_zeroes": "off", "image": {"virtual-size": 32212254720, "filename": "guest.qcow2", \
