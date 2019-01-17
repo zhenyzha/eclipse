@@ -25,7 +25,8 @@
 {"execute":"device_del","arguments":{"id":"scsi-disk1"}} 
 
 
-
+下面的命令创建256个qcow2文件
+for i in `seq 0 255`;do qemu-img create -f qcow2 "/home/iscsi_mount/stg$i.qcow2" 1G;done
 
 下面为热插入三块磁盘：Drive usage:
 {'execute':'device_add','arguments':{'driver':'virtio-scsi-pci','bus':'pci.0','id':'virtio_scsi_pci2','addr':'0x8'}}
