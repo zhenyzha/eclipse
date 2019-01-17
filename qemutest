@@ -27,27 +27,31 @@
 -enable-kvm \
 -monitor stdio
 
-blockdev
+
 #!/bin/bash
 #RHEL8-94701 - [virtual block][virtio scsi] online enlarge and shrink virtio-scsi data disk     
 /usr/libexec/qemu-kvm -enable-kvm -m 2048 -smp 4,cores=4 \
--device virtio-scsi-pci,id=virtio_scsi_pci0,addr=0x4 \
+
 -device virtio-balloon-pci,id=balloon0,bus=pci.0,addr=0x5 \
 -device virtio-net-pci,mac=00:16:3e:22:22:22,id=testid,vectors=4,netdev=idDRE1on,bus=pci.0,addr=0x6 \ 半虚拟网络
 -netdev tap,id=idDRE1on,vhost=on \ 
+
+-device virtio-scsi-pci,id=virtio_scsi_pci0,addr=0x4 \
 -blockdev driver=file,cache.direct=off,cache.no-flush=on,filename=data.qcow2,node-name=my_file \  磁盘内容
 -blockdev driver=qcow2,node-name=my,file=my_file \
+-device scsi-hd,drive=my,bus=virtio_scsi_pci0.0,bootindex=0 \    磁盘框架指定盘片(驱动)
+
 -blockdev driver=file,cache.direct=off,cache.no-flush=on,filename=data2.qcow2,node-name=my_file2 \  磁盘内容
 -blockdev driver=qcow2,node-name=my2,file=my_file2 \
--device scsi-hd,drive=my,bus=virtio_scsi_pci0.0,bootindex=0 \    磁盘框架指定盘片(驱动)
 -device scsi-hd,drive=my2,bus=virtio_scsi_pci0.0,bootindex=1 \
+
 -cdrom /mnt/isos/linux/RHEL-8.0-20181220.1-ppc64le-dvd1.iso \
 -device usb-tablet \     固定鼠标不漂移
 -vnc :03 \
 -qmp tcp:0:4441,server,nowait \   开启qmp, telnet localhost 4441
 -serial stdio \   在当前cmd显示guest窗口
 
-
+Blockdev usage:
    -device pcie-root-port,id=pcie.0-root-port-9,slot=9,chassis=9,addr=0x9,bus=pcie.0 \
     -device virtio-scsi-pci,id=virtio_scsi_pci1,bus=pcie.0-root-port-9,addr=0x0 \
     -blockdev driver=file,cache.direct=off,cache.no-flush=on,filename=data.qcow2,node-name=data_disk \
