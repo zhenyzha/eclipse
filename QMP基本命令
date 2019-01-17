@@ -9,7 +9,7 @@ telnet localhost 4441
 当虚拟机处于热迁移的监听状态时，返回如下指令：
 {"return": {"status": "inmigrate", "singlestep": false, "running": false}}
 
-
+"ctrl + ]" quit 退出
 
 {"io-status": "ok", "device": "drive-scsi-disk0", "locked": false, "removable": false, "inserted": 
 {"iops_rd": 0, "detect_zeroes": "off", "image": {"virtual-size": 32212254720, "filename": "guest.qcow2", \
