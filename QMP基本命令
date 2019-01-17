@@ -25,8 +25,38 @@
 {"execute":"device_del","arguments":{"id":"scsi-disk1"}} 
 
 
-{"execute":"__com.redhat_drive_add", "arguments": {"file":"data.raw","format":"raw","id":"drive-scsi-disk1"}}
-{"execute":"device_add","arguments":{"driver":"virtio-scsi-pci","id":"scsi1","num_queues":"4"}}
-{"execute":"device_add","arguments":{"driver":"scsi-hd","drive":"drive-scsi-disk1","id":"scsi-disk1"}}
 
-{"execute":"device_add","arguments":{"driver":"scsi-hd","drive":"drive-1","id":"drive-1"}}
+
+下面为热插入三块磁盘：Drive usage:
+{'execute':'device_add','arguments':{'driver':'virtio-scsi-pci','bus':'pci.0','id':'virtio_scsi_pci2','addr':'0x8'}}
+{'execute':'__com.redhat_drive_add', 'arguments': 
+{'file':'/home/iscsi_mount/stg1.qcow2','format':'qcow2','id':'stg-1','aio':'native','cache':'none'}}
+{'execute':'device_add','arguments':{'driver':'scsi-hd','bus':'virtio_scsi_pci2.0','drive':'stg-1','id':'hd-1'}}
+{'execute':'__com.redhat_drive_add', 'arguments': {'file':'/home/iscsi_mount/stg2.qcow2','format':'qcow2','id':'stg-2','aio':'native','cache':'none'}}
+{'execute':'device_add','arguments':{'driver':'scsi-hd','bus':'virtio_scsi_pci2.0','drive':'stg-2','id':'hd-2'}}
+{'execute':'__com.redhat_drive_add', 'arguments': {'file':'/home/iscsi_mount/stg3.qcow2','format':'qcow2','id':'stg-3','aio':'native','cache':'none'}}
+{'execute':'device_add','arguments':{'driver':'scsi-hd','bus':'virtio_scsi_pci2.0','drive':'stg-3','id':'hd-3'}}
+
+下面为热插入三块磁盘：Blockdev usage:
+{"execute": "blockdev-add","arguments": {"node-name":"data_disk1","driver":"file","filename":"/home/kvm_autotest_root/images/stg1.qcow2"}}
+{"execute": "blockdev-add","arguments": {"node-name": "disk1","driver":"qcow2","file":"data_disk1"}}
+{"execute":"device_add","arguments":{"driver":"virtio-scsi-pci","id":"virtio_scsi_pci1","bus":"pcie.0-root-port-9","addr":"0x0"}}
+{"execute":"device_add","arguments":{"driver":"scsi-hd","drive":"disk1","id":"data_disk1","bus":"virtio_scsi_pci1.0"}}
+{"execute": "blockdev-add","arguments": {"node-name":"data_disk2","driver":"file","filename":"/home/kvm_autotest_root/images/stg2.qcow2"}}
+{"execute": "blockdev-add","arguments": {"node-name": "disk2","driver":"qcow2","file":"data_disk2"}}
+{"execute":"device_add","arguments":{"driver":"scsi-hd","drive":"disk2","id":"data_disk2","bus":"virtio_scsi_pci1.0"}}
+{"execute": "blockdev-add","arguments": {"node-name":"data_disk3","driver":"file","filename":"/home/kvm_autotest_root/images/stg3.qcow2"}}
+{"execute": "blockdev-add","arguments": {"node-name": "disk3","driver":"qcow2","file":"data_disk3"}}
+{"execute":"device_add","arguments":{"driver":"scsi-hd","drive":"disk3","id":"data_disk3","bus":"virtio_scsi_pci1.0"}}
+
+下面为热插入三块磁盘：Blockdev via Dummy backends:
+{"execute": "blockdev-add","arguments": {"driver": "null-co","node-name": "drive2"}}
+{"execute":"device_add","arguments":{"driver":"virtio-scsi-pci","id":"scsi1","bus":"pci.0","addr":"0x8"}} 
+{"execute":"device_add","arguments":{"driver":"scsi-hd","drive":"drive2","id":"data-disk1","bus":"scsi1.0"}}
+{"execute": "blockdev-add","arguments": {"driver": "null-co","node-name": "drive3"}}
+{"execute":"device_add","arguments":{"driver":"scsi-hd","drive":"drive3","id":"data-disk2","bus":"scsi1.0"}}
+{"execute": "blockdev-add","arguments": {"driver": "null-co","node-name": "drive4"}}
+
+检查check block info via QMP.
+# {"execute":"query-block"}
+
