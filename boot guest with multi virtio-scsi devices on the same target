@@ -30,7 +30,7 @@ j=$((1*$i))
 cli="$cli -blockdev driver=file,cache.direct=off,cache.no-flush=on,filename=/home/test/zhenyzha-nfs/disk/disk$j,node-name=disk_$j"
 #cli="$cli -device scsi-hd,bus=scsi-pci-1.0,drive=disk$j,id=target$j,channel=0,scsi-id=$j,lun=$j"
 cli="$cli -blockdev driver=qcow2,node-name=my$j,file=disk_$j"
-cli="$cli -device scsi-hd,lun=$j,drive=my$j,bus=scsi-pci-1.0"
+cli="$cli -device scsi-hd,scsi-id=$j,lun=$j,drive=my$j,bus=scsi-pci-1.0"
 #cli="$cli -device scsi-hd,bus=scsi0.0,drive=disk$j,id=target$j,scsi-id=$(($i%256)),lun=$(($i/256))"
 #cli="$cli -drive file=/home/test/zhenyzha-nfs/disk/disk$(($j+1)),if=none,id=disk$(($j+1))"
 #cli="$cli -device scsi-hd,bus=scsi1.0,drive=disk$(($j+1)),id=target$(($j+1)),scsi-id=$(($i%256)),lun=$(($i/256))"
