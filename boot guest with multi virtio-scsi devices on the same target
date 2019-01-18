@@ -1,0 +1,43 @@
+#!/bin/bash
+count=$((${1:-1}-1))
+i=0;while [ $i -lt $(($count+1)) ]; do qemu-img create -f qcow2 /home/test/zhenyzha-nfs/disk/disk$i 1G;i=$(($i+1));done
+
+ulimit -n 4096
+cli="/usr/libexec/qemu-kvm"
+cli="$cli -name zhenyzha-RHEL-8.0-20181220.1"
+cli="$cli -M pseries,max-cpu-compat=power9"
+cli="$cli -m 4G"
+cli="$cli -nodefaults"
+cli="$cli -device nec-usb-xhci,id=xhci"
+cli="$cli -device usb-tablet,id=usb-tablet0"
+cli="$cli -device usb-kbd,id=usb-kbd0"
+cli="$cli -smp 4,cores=4,threads=1,sockets=1"
+cli="$cli -vnc :30"
+cli="$cli -serial stdio"
+cli="$cli -boot order=cdn,once=d,menu=off,strict=off"
+cli="$cli -enable-kvm"
+cli="$cli -qmp unix:/var/tmp/qmp-monitor-zhenyzha,server,nowait"
+cli="$cli -qmp tcp:0:3001,server,nowait"
+cli="$cli -device virtio-scsi-pci,bus=pci.0,addr=0x06,id=scsi-pci-0"
+cli="$cli -device virtio-scsi-pci,bus=pci.0,addr=0x07,id=scsi-pci-1"
+cli="$cli -netdev tap,id=hostnet0,vhost=on,script=/etc/qemu-ifup"
+cli="$cli -device virtio-net-pci,netdev=hostnet0,id=virtio-net-pci0,mac=40:f2:e9:5d:9c:07"
+#count=$((${1:-1}-1))
+for i in $(seq 0 $count)
+do
+j=$((1*$i))
+#cli="$cli -drive file=/home/test/zhenyzha-nfs/disk/disk$j,if=none,id=disk$j"
+cli="$cli -blockdev driver=file,cache.direct=off,cache.no-flush=on,filename=/home/test/zhenyzha-nfs/disk/disk$j,node-name=disk_$j"
+#cli="$cli -device scsi-hd,bus=scsi-pci-1.0,drive=disk$j,id=target$j,channel=0,scsi-id=$j,lun=$j"
+cli="$cli -blockdev driver=qcow2,node-name=my$j,file=disk_$j"
+cli="$cli -device scsi-hd,drive=my$j,bus=scsi-pci-1.0"
+#cli="$cli -device scsi-hd,bus=scsi0.0,drive=disk$j,id=target$j,scsi-id=$(($i%256)),lun=$(($i/256))"
+#cli="$cli -drive file=/home/test/zhenyzha-nfs/disk/disk$(($j+1)),if=none,id=disk$(($j+1))"
+#cli="$cli -device scsi-hd,bus=scsi1.0,drive=disk$(($j+1)),id=target$(($j+1)),scsi-id=$(($i%256)),lun=$(($i/256))"
+done
+cli="$cli -blockdev driver=file,cache.direct=off,cache.no-flush=on,filename=guest.qcow2,node-name=my_file"
+cli="$cli -blockdev driver=qcow2,node-name=my,file=my_file"
+cli="$cli -device scsi-hd,drive=my,bus=scsi-pci-0.0,bootindex=0"
+echo "=========================Start Guest=================="
+echo "$cli"
+$cli
