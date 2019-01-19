@@ -64,7 +64,6 @@ End
                         mkdir -p /data/sd${j}
 	                mount /dev/sd${j}1 /data/sd${j}
 	let i+=1
-	sleep 5s
 
 
 done
