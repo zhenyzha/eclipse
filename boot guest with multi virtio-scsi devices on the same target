@@ -70,14 +70,25 @@ done
 
 
 
-可用 dd if=/dev/zero of=file bs=1G seek=500 count=0
+可用 
+dd if=/dev/zero of=file bs=1M count=800
+
+md5sum file > md5sum.txt
+md5sum -c md5sum.txt
+
 #!/bin/bash
+i=1
+while [ $i -lt 767 ]
+do
+	j=`echo $i|awk '{printf "%c",97+$i}'`
+	k=`echo $i|awk '{printf "%c",98+$i}'`
+End
 
 counter=0
 df -lh >> counterRecord
 rm -rf counterRecord
 touch counterRecord
-while [ $counter -lt 50000 ];do
+while [ $counter -lt 1 ];do
 echo $counter time run 
 echo Running $counter time copy big file >> counterRecord
 date >>counterRecord
@@ -86,22 +97,8 @@ parted -l >> counterRecord
 ########################################################################################################################################
 ###Start####################If the number of  partition not arrive 8 or have another mount point , pls change below command.#############
 
-rsync -av  /root/Desktop/e/iobw.tst /root/Desktop/g/
-rm -rf /root/Desktop/e/iobw.tst
-rsync -av /root/Desktop/g/iobw.tst /root/Desktop/i/
-rm -rf /root/Desktop/f/iobw.tst
-rsync -av /root/Desktop/i/iobw.tst /root/Desktop/k/
-rm -rf /root/Desktop/i/iobw.tst
-rsync -av /root/Desktop/k/iobw.tst /root/Desktop/f/
-rm -rf /root/Desktop/k/iobw.tst
-rsync -av /root/Desktop/f/iobw.tst /root/Desktop/h/
-rm -rf /root/Desktop/f/iobw.tst
-rsync -av /root/Desktop/h/iobw.tst /root/Desktop/j/
-rm -rf /root/Desktop/h/iobw.tst
-rsync -av /root/Desktop/j/iobw.tst /root/Desktop/l/
-rm -rf /root/Desktop/j/iobw.tst
-rsync -av /root/Desktop/l/iobw.tst /root/Desktop/e/
-rm -rf /root/Desktop/l/iobw.tst
+rsync -av  /data/sd${j}/file /data/sd${k}/
+
 
 ###End######################################################################################################################################
 let counter=counter+1
