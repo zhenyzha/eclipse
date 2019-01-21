@@ -68,5 +68,49 @@ End
 
 done
 
+#!/bin/bash
+
+# Ver 20140715
+# Before you test,you need do follow step successfully:
+#1. Make disk to different partitions with fdisk or parted command (eg. fdisk /dev/sda),you should create 8 new partitions
+#2. Format the partition you created with mkfs (eg. mkfs -t ext3 /dev/sda1)
+#3. create new directory on root directory (mkdir e,g,i,k,f,h,j,l,e)
+#4. mount the different partition to the different directory you create(mount /dev/sda1 /e/),you should mount 8 new partition to different directory.
+
+counter=0
+df -lh >> counterRecord
+rm -rf counterRecord
+touch counterRecord
+while [ $counter -lt 50000 ];do
+echo $counter time run 
+echo Running $counter time copy big file >> counterRecord
+date >>counterRecord
+parted -l >> counterRecord
+
+########################################################################################################################################
+###Start####################If the number of  partition not arrive 8 or have another mount point , pls change below command.#############
+
+rsync -av  /root/Desktop/e/iobw.tst /root/Desktop/g/
+rm -rf /root/Desktop/e/iobw.tst
+rsync -av /root/Desktop/g/iobw.tst /root/Desktop/i/
+rm -rf /root/Desktop/f/iobw.tst
+rsync -av /root/Desktop/i/iobw.tst /root/Desktop/k/
+rm -rf /root/Desktop/i/iobw.tst
+rsync -av /root/Desktop/k/iobw.tst /root/Desktop/f/
+rm -rf /root/Desktop/k/iobw.tst
+rsync -av /root/Desktop/f/iobw.tst /root/Desktop/h/
+rm -rf /root/Desktop/f/iobw.tst
+rsync -av /root/Desktop/h/iobw.tst /root/Desktop/j/
+rm -rf /root/Desktop/h/iobw.tst
+rsync -av /root/Desktop/j/iobw.tst /root/Desktop/l/
+rm -rf /root/Desktop/j/iobw.tst
+rsync -av /root/Desktop/l/iobw.tst /root/Desktop/e/
+rm -rf /root/Desktop/l/iobw.tst
+
+###End######################################################################################################################################
+let counter=counter+1
+
+done
+echo   copy big file success!!!
 
 
