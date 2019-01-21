@@ -5,3 +5,4 @@ git clone https://gitlab.cee.redhat.com/kvm-qe/kar.git && cd kar && ./Bootstrap.
 git clone https://gitlab.cee.redhat.com/yhong/vmt.git
 
 python3 vmt/Star2RunPlus.py
+
