@@ -68,6 +68,10 @@ End
 
 done
 
+
+
+
+ 可用 dd if=/dev/zero of=file bs=1G seek=500 count=0
 #!/bin/bash
 
 # Ver 20140715
