@@ -1,0 +1,7 @@
+curl -L http://password.corp.redhat.com/RH-IT-Root-CA.crt -o /etc/pki/ca-trust/source/anchors/RH-IT-Root-CA.crt
+update-ca-trust enable
+update-ca-trust extract
+git clone https://gitlab.cee.redhat.com/kvm-qe/kar.git && cd kar && ./Bootstrap.sh --develop --venv --upstream --verbose
+git clone https://gitlab.cee.redhat.com/yhong/vmt.git
+
+python3 vmt/Star2RunPlus.py
