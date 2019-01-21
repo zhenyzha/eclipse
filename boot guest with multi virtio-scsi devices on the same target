@@ -70,16 +70,8 @@ done
 
 
 
-
- 可用 dd if=/dev/zero of=file bs=1G seek=500 count=0
+可用 dd if=/dev/zero of=file bs=1G seek=500 count=0
 #!/bin/bash
-
-# Ver 20140715
-# Before you test,you need do follow step successfully:
-#1. Make disk to different partitions with fdisk or parted command (eg. fdisk /dev/sda),you should create 8 new partitions
-#2. Format the partition you created with mkfs (eg. mkfs -t ext3 /dev/sda1)
-#3. create new directory on root directory (mkdir e,g,i,k,f,h,j,l,e)
-#4. mount the different partition to the different directory you create(mount /dev/sda1 /e/),you should mount 8 new partition to different directory.
 
 counter=0
 df -lh >> counterRecord
