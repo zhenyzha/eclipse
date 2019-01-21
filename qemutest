@@ -35,8 +35,8 @@
 -M pseries,max-cpu-compat=power9 \
 -nodefaults \
 -device virtio-balloon-pci,id=balloon0,bus=pci.0,addr=0x5 \
--device virtio-net-pci,mac=00:16:3e:22:22:22,id=testid,vectors=4,netdev=idDRE1on,bus=pci.0,addr=0x6 \ 
--netdev tap,id=idDRE1on,vhost=on,script=/etc/qemu-ifup \ 
+-device virtio-net-pci,mac=00:16:3e:22:22:22,id=testid,vectors=4,netdev=idDRE1on,bus=pci.0,addr=0x6 \
+-netdev tap,id=idDRE1on,vhost=on,script=/etc/qemu-ifup \
 -device nec-usb-xhci,id=xhci \
 -device usb-tablet,id=usb-tablet0 \
 -device usb-kbd,id=usb-kbd0 \
@@ -45,6 +45,7 @@
 -qmp tcp:0:4441,server,nowait \
 -serial stdio \
 -boot order=cdn,once=d,menu=off,strict=off \
+-drive media=cdrom,file= \
 
 
 
