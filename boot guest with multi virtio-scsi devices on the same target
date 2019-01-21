@@ -1,3 +1,5 @@
+mkdir -p /home/test/zhenyzha-nfs/disk/
+qemu-img create -f qcow2 guest.qcow2 30G
 #!/bin/bash
 count=$((${1:-1}-1))
 i=0;while [ $i -lt $(($count+1)) ]; do qemu-img create -f qcow2 /home/test/zhenyzha-nfs/disk/disk$i 1G;i=$(($i+1));done
@@ -22,6 +24,7 @@ cli="$cli -device virtio-scsi-pci,bus=pci.0,addr=0x06,id=scsi-pci-0"
 cli="$cli -device virtio-scsi-pci,bus=pci.0,addr=0x07,id=scsi-pci-1"
 cli="$cli -netdev tap,id=hostnet0,vhost=on,script=/etc/qemu-ifup"
 cli="$cli -device virtio-net-pci,netdev=hostnet0,id=virtio-net-pci0,mac=40:f2:e9:5d:9c:07"
+cli="$cli -drive media=cdrom,file=/mnt/os/linux/RHEL-8.0-20190116.1-ppc64le-dvd1.iso,bootindex=0"
 #count=$((${1:-1}-1))
 for i in $(seq 0 $count)
 do
@@ -37,7 +40,7 @@ cli="$cli -device scsi-hd,id=target$j,scsi-id=$(($i%256)),lun=$(($i/256)),drive=
 done
 cli="$cli -blockdev driver=file,cache.direct=off,cache.no-flush=on,filename=guest.qcow2,node-name=my_file"
 cli="$cli -blockdev driver=qcow2,node-name=my,file=my_file"
-cli="$cli -device scsi-hd,drive=my,bus=scsi-pci-0.0,bootindex=0"
+cli="$cli -device scsi-hd,drive=my,bus=scsi-pci-0.0,bootindex=1"
 echo "=========================Start Guest=================="
 echo "$cli"
 $cli
