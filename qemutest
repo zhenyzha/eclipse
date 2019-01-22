@@ -1,31 +1,35 @@
+ 
 /usr/libexec/qemu-kvm \
--name 'avocado-vt-vm1'  \
+-name 'ppc-block-testvm1' \
 -sandbox off  \
--machine pc  \(-M pseries,max-cpu-compat=power8)
+-machine pseries  \
 -nodefaults  \
--vga cirrus  \
--chardev socket,id=qmp_id_catch_monitor,path=/var/tmp/monitor-catch_monitor0,server,nowait \
--mon chardev=qmp_id_catch_monitor,mode=control \
--device pvpanic,ioport=0x505,id=id6KSSzk  \
--chardev socket,id=serial_id_serial0,path=/var/tmp/serial-serial0,server,nowait \
--device isa-serial,chardev=serial_id_serial0  \
--chardev socket,id=seabioslog_id_20180626-083230-Om7lITnZ,path=/var/tmp/seabiosO,server,nowait \
--device isa-debugcon,chardev=seabioslog_id_20180626-083230-Om7lITnZ,iobase=0x402 \
--device nec-usb-xhci,id=usb1,bus=pci.0,addr=0x3 \
--device virtio-scsi-pci,id=virtio_scsi_pci0,bus=pci.0,addr=0x4 \
--drive id=drive_image1,if=none,snapshot=off,aio=threads,cache=none,format=qcow2,file=/home/zhenyzha/RHEL8.img \
--device scsi-hd,id=image1,drive=drive_image1 \
--device virtio-net-pci,mac=9a:8e:8f:90:91:92,id=idZiNCIw,vectors=4,netdev=idDRE1on,bus=pci.0,addr=0x5 \
--netdev tap,id=idDRE1on,vhost=on \
+-vga std  \
+-chardev socket,id=qmp_catch_monitorppc1,path=/var/tmp/monitor-catch_monitorppc1,server,nowait \
+-mon chardev=qmp_catch_monitorppc1,mode=control  \
+-chardev socket,id=serial_id_serialppc1,path=/var/tmp/serial-serialppc1,server,nowait \
+-device spapr-vty,reg=0x30000000,chardev=serial_id_serialppc1 \
+-device nec-usb-xhci,id=usbppc1,bus=pci.0,addr=0x3 \
+-blockdev driver=file,filename=/root/rheltest.qcow2,cache.direct=off,cache.no-flush=on,node-name=sysdisk \
+-blockdev driver=qcow2,file=sysdisk,node-name=drive_imageppc1 \
+-device virtio-scsi-pci,id=virtio_scsi_pcippc1,bus=pci.0,addr=0x4 \
+-device scsi-hd,id=imageppc1,drive=drive_imageppc1,werror=stop,rerror=stop \
 -m 8192  \
 -smp 8,cores=4,threads=1,sockets=2  \
--device usb-tablet,id=usb-tablet1,bus=usb1.0,port=1  \
--device usb-kbd,id=usb-kbd1,bus=usb1.0,port=2  \
--vnc :0  \
--rtc base=utc,clock=host,driftfix=slew  \
--boot menu=off,strict=off,order=cdn,once=c \
+-device usb-tablet,id=usb-tabletppc1,bus=usbppc1.0,port=1  \
+-device usb-kbd,id=usb-kbdppc1,bus=usbppc1.0,port=2  \
+-vnc :1 \
+-rtc base=utc,clock=host  \
 -enable-kvm \
--monitor stdio
+-qmp tcp:0:4441,server,nowait \
+-netdev tap,id=tap1,script=/etc/qemu-ifup,downscript=/etc/qemu-ifdown,vhost=on \
+-device virtio-net-pci,netdev=tap1,id=nic1,mac=1a:59:0a:4b:5a:94 \
+-serial tcp:0:3331,server,nowait \
+-monitor stdio \
+-boot menu=off,strict=off,order=cdn,once=c \
+--- boot from cd --
+-boot order=cd
+-cdrom $file_name
 
 
 #!/bin/bash
