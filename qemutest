@@ -106,10 +106,15 @@ virtio-scsi
 
 
 virtio-blk                                                       （blk模式PCI：存储设备 1：1对应，PCI总线32条最多32个磁盘占用）
--device virtio-blk-pci,scsi=off,bus=pci.0,addr=0x4,drive=drive-virtio0-0-0,id=virtio0-0-0,bootindex=0 \
--drive file=/home/zhenyzha-nfs/test1/1.img,if=none,id=drive-virtio0-0-0,media=disk,werror=stop,rerror=stop,cache=none,format=raw \
--device virtio-blk-pci,scsi=off,bus=pci.0,addr=0x5,drive=drive-virtio0-0-1,id=virtio0-0-1,bootindex=1 \
--drive file=/home/zhenyzha-nfs/test1/2.img,if=none,id=drive-virtio0-0-1,media=disk,werror=stop,rerror=stop,cache=none,format=raw \
+-device virtio-scsi-pci,bus=pci.0,addr=0x06,id=scsi-pci-0 \
+-blockdev driver=raw,file.driver=file,node-name=drive_cd1,cache.no-flush=on,cache.direct=off,file.filename=/mnt/os/RHEL-8.0-20190116.1-ppc64le-dvd1.iso,read-only=on \
+-device scsi-cd,id=cd1,drive=drive_cd1,bootindex=0 \
+-device virtio-blk-pci,scsi=off,bus=pci.0,addr=0x5,drive=drive-virtio0-0-1,id=virtio0-0-1 \
+-blockdev driver=file,cache.direct=off,cache.no-flush=on,filename=/home/test/zhenyzha-nfs/disk/disk_6,node-name=disk_0 \
+-blockdev driver=qcow2,node-name=drive-virtio0-0-1,file=disk_0 \
+-device virtio-blk-pci,scsi=off,bus=pci.0,addr=0x7,drive=drive-virtio0-0-2,id=virtio0-0-2 \
+-blockdev driver=file,cache.direct=off,cache.no-flush=on,filename=guest.qcow2,node-name=disk_1 \
+-blockdev driver=qcow2,node-name=drive-virtio0-0-2,file=disk_1 \
 
 
 -object iothread,id=iothread1 \
