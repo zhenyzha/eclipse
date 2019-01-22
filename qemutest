@@ -62,7 +62,9 @@
 -blockdev driver=qcow2,node-name=my2,file=my_file2 \
 -device scsi-hd,drive=my2,bus=virtio_scsi_pci0.0,bootindex=1 \
 
--cdrom /mnt/isos/linux/RHEL-8.0-20181220.1-ppc64le-dvd1.iso \
+scsi-cd的用法
+-blockdev driver=raw,file.driver=file,node-name=drive_cd1,cache.no-flush=on,cache.direct=off,file.filename=/mnt/os/RHEL-8.0-20190116.1-ppc64le-dvd1.iso,read-only=on \
+-device scsi-cd,id=cd1,drive=drive_cd1,bootindex=0 \
 
 
 Blockdev usage:
