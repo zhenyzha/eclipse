@@ -7,3 +7,4 @@ git clone https://gitlab.cee.redhat.com/yhong/vmt.git
 
 python3 vmt/Star2RunPlus.py
 
+./python --install-virtqemu 'qemu-kvm-3.1.0-5.module+el8+2708+fbd828c6'
