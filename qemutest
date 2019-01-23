@@ -32,24 +32,6 @@
 -cdrom $file_name
 
 
-#!/bin/bash
-#RHEL8-94701      
-/usr/libexec/qemu-kvm -enable-kvm -m 4096 -smp 4,cores=4,threads=1,sockets=1 \
--name zhenyzha-RHEL-8.0-20181220.1 \
--M pseries,max-cpu-compat=power9 \
--nodefaults \
--device virtio-balloon-pci,id=balloon0,bus=pci.0,addr=0x5 \
--device virtio-net-pci,mac=00:16:3e:22:22:22,id=testid,vectors=4,netdev=idDRE1on,bus=pci.0,addr=0x6 \
--netdev tap,id=idDRE1on,vhost=on,script=/etc/qemu-ifup \
--device nec-usb-xhci,id=xhci \
--device usb-tablet,id=usb-tablet0 \
--device usb-kbd,id=usb-kbd0 \
--vnc :03 \
--qmp unix:/var/tmp/qmp-monitor-zhenyzha,server,nowait \
--qmp tcp:0:4441,server,nowait \
--serial stdio \
--boot order=cdn,once=d,menu=off,strict=off \
--drive media=cdrom,file= \
 
 
 
@@ -117,9 +99,95 @@ virtio-blk                                                       （blk模式PCI
 -blockdev driver=qcow2,node-name=drive-virtio0-0-2,file=disk_1 \
 
 
--object iothread,id=iothread1 \
--device virtio-scsi-pci,id=virtio_scsi_pci0,bus=pci.0,addr=0x6,iothread=iothread1 \
-......
--device virtio-blk-pci, ..., iothread=iothread1 \
 
 
+
+virtio-scsi-pci 一块blockdev 一块drive
+/usr/libexec/qemu-kvm \
+-name zhenyzha-RHEL-8.0-20181220.1 \
+-sandbox off \
+-machine pseries \
+-m 8G \
+-nodefaults \
+-vga std \
+-device nec-usb-xhci,id=xhci \
+-device usb-tablet,id=usb-tablet0 \
+-device usb-kbd,id=usb-kbd0 \
+-smp 4,cores=4,threads=1,sockets=1 \
+-vnc :30 \
+-monitor stdio \
+-rtc base=utc,clock=host \
+-boot order=cd,menu=off,strict=off \
+-enable-kvm \
+-qmp unix:/var/tmp/qmp-monitor-zhenyzha,server,nowait \
+-qmp tcp:0:3001,server,nowait \
+-device virtio-scsi-pci,bus=pci.0,addr=0x06,id=scsi-pci-0 \
+-device virtio-scsi-pci,bus=pci.0,addr=0x07,id=scsi-pci-1 \
+-netdev tap,id=hostnet0,vhost=on,script=/etc/qemu-ifup \
+-device virtio-net-pci,netdev=hostnet0,id=virtio-net-pci0,mac=40:f2:e9:5d:9c:07 \
+-blockdev driver=raw,file.driver=file,node-name=drive_cd1,cache.no-flush=on,cache.direct=off,file.filename=/mnt/os/RHEL-8.0-20190116.1-ppc64le-dvd1.iso,read-only=on \
+-device scsi-cd,id=cd1,drive=drive_cd1,bootindex=0 \
+-blockdev driver=file,cache.direct=off,cache.no-flush=on,filename=guest.qcow2,node-name=my_file \
+-blockdev driver=qcow2,node-name=my,file=my_file \
+-device scsi-hd,drive=my,bus=scsi-pci-0.0,id=zhneg \
+-drive id=my0,format=qcow2,media=disk,if=none,file=/home/test/zhenyzha-nfs/disk/disk0 \
+-device scsi-hd,id=target0,drive=my0,bus=scsi-pci-1.0 \
+
+
+virtio-blk-pci 两块blockdev
+/usr/libexec/qemu-kvm \
+-name zhenyzha-RHEL-8.0-20181220.1 \
+-sandbox off \
+-machine pseries \
+-m 8G \
+-nodefaults \
+-vga std \
+-device nec-usb-xhci,id=xhci \
+-device usb-tablet,id=usb-tablet0 \
+-device usb-kbd,id=usb-kbd0 \
+-smp 4,cores=4,threads=1,sockets=1 \
+-vnc :30 \
+-monitor stdio \
+-rtc base=utc,clock=host \
+-boot order=cd,menu=off,strict=off \
+-enable-kvm \
+-qmp unix:/var/tmp/qmp-monitor-zhenyzha,server,nowait \
+-qmp tcp:0:3001,server,nowait \
+-netdev tap,id=hostnet0,vhost=on,script=/etc/qemu-ifup \
+-device virtio-net-pci,netdev=hostnet0,id=virtio-net-pci0,mac=40:f2:e9:5d:9c:07 \
+-device virtio-scsi-pci,bus=pci.0,addr=0x06,id=scsi-pci-0 \
+-blockdev driver=raw,file.driver=file,node-name=drive_cd1,cache.no-flush=on,cache.direct=off,file.filename=/mnt/os/RHEL-8.0-20190116.1-ppc64le-dvd1.iso,read-only=on \
+-device scsi-cd,id=cd1,drive=drive_cd1,bootindex=0 \
+-device virtio-blk-pci,scsi=off,bus=pci.0,addr=0x5,drive=drive-virtio0-0-1,id=virtio0-0-1 \
+-blockdev driver=file,cache.direct=off,cache.no-flush=on,filename=/home/test/zhenyzha-nfs/disk/disk_6,node-name=disk_0 \
+-blockdev driver=qcow2,node-name=drive-virtio0-0-1,file=disk_0 \
+-device virtio-blk-pci,scsi=off,bus=pci.0,addr=0x7,drive=drive-virtio0-0-2,id=virtio0-0-2 \
+-blockdev driver=file,cache.direct=off,cache.no-flush=on,filename=guest.qcow2,node-name=disk_1 \
+-blockdev driver=qcow2,node-name=drive-virtio0-0-2,file=disk_1 \
+
+
+x86 virtio-scsi-pci 两块blockdev
+/usr/libexec/qemu-kvm \
+-name zhenyzha-RHEL-8.0-20181220.1 \
+-m 4G \
+-nodefaults \
+-vga qxl \
+-smp 4,cores=4,threads=1,sockets=1 \
+-vnc :30 \
+-monitor stdio \
+-rtc base=utc,clock=host \
+-boot order=cd,menu=off,strict=off \
+-enable-kvm \
+-qmp unix:/var/tmp/qmp-monitor-zhenyzha,server,nowait \
+-qmp tcp:0:3001,server,nowait \
+-device virtio-scsi-pci,bus=pci.0,addr=0x05,id=scsi-pci-1 \
+-blockdev driver=raw,file.driver=file,node-name=drive_cd1,cache.no-flush=on,cache.direct=off,file.filename=/mnt/os/RHEL-8.0-20190116.1-x86_64-dvd1.iso,read-only=on \
+-device scsi-cd,id=cd1,drive=drive_cd1,bootindex=0 \
+-device pcie-root-port,id=pcie.0-root-port-6,slot=6,chassis=6,addr=0x6 \
+-device virtio-scsi-pci,id=scsi-pci-0,bus=pcie.0-root-port-6,addr=0x0 \
+-blockdev driver=file,cache.direct=off,cache.no-flush=on,filename=guest.qcow2,node-name=my_file \
+-blockdev driver=qcow2,node-name=my,file=my_file \
+-device scsi-hd,drive=my,bus=scsi-pci-0.0,id=zhneg \
+-blockdev driver=file,cache.direct=off,cache.no-flush=on,filename=/home/test/zhenyzha-nfs/disk/disk_6,node-name=disk_0 \
+-blockdev driver=qcow2,node-name=my0,file=disk_0 \
+-device scsi-hd,drive=my0,bus=scsi-pci-0.0,id=target0 \
