@@ -3,6 +3,8 @@ telnet localhost 4441
 { "execute": "qmp_capabilities" }
 { "return": {}}  返回
 
+{"execute": "migrate","arguments":{"uri": "tcp:10.19.128.153:3001"}} 迁移命令，本地为tcp:0
+
 { "execute": "query-status" }   查询虚拟机状态
 当虚拟机正常运行时，会返回如下指令：
 {"return": {"status": "running", "singlestep": false, "running": true}}   
