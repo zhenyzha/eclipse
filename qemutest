@@ -1,35 +1,49 @@
- 
 /usr/libexec/qemu-kvm \
--name 'ppc-block-testvm1' \
--sandbox off  \
--machine pseries  \
--nodefaults  \
--vga std  \
--chardev socket,id=qmp_catch_monitorppc1,path=/var/tmp/monitor-catch_monitorppc1,server,nowait \
--mon chardev=qmp_catch_monitorppc1,mode=control  \
--chardev socket,id=serial_id_serialppc1,path=/var/tmp/serial-serialppc1,server,nowait \
--device spapr-vty,reg=0x30000000,chardev=serial_id_serialppc1 \
--device nec-usb-xhci,id=usbppc1,bus=pci.0,addr=0x3 \
--blockdev driver=file,filename=/root/rheltest.qcow2,cache.direct=off,cache.no-flush=on,node-name=sysdisk \
--blockdev driver=qcow2,file=sysdisk,node-name=drive_imageppc1 \
--device virtio-scsi-pci,id=virtio_scsi_pcippc1,bus=pci.0,addr=0x4 \
--device scsi-hd,id=imageppc1,drive=drive_imageppc1,werror=stop,rerror=stop \
--m 8192  \
--smp 8,cores=4,threads=1,sockets=2  \
--device usb-tablet,id=usb-tabletppc1,bus=usbppc1.0,port=1  \
--device usb-kbd,id=usb-kbdppc1,bus=usbppc1.0,port=2  \
--vnc :1 \
--rtc base=utc,clock=host  \
--enable-kvm \
--qmp tcp:0:4441,server,nowait \
--netdev tap,id=tap1,script=/etc/qemu-ifup,downscript=/etc/qemu-ifdown,vhost=on \
--device virtio-net-pci,netdev=tap1,id=nic1,mac=1a:59:0a:4b:5a:94 \
--serial tcp:0:3331,server,nowait \
--monitor stdio \
--boot menu=off,strict=off,order=cdn,once=c \
---- boot from cd --
--boot order=cd
--cdrom $file_name
+    -S  \
+    -name 'avocado-vt-vm1' \
+    -machine q35  \
+    -nodefaults \
+    -device VGA,bus=pcie.0,addr=0x1 \
+    -device pcie-root-port,id=pcie_root_port_0,slot=2,chassis=2,addr=0x2,bus=pcie.0 \
+    -device pcie-root-port,id=pcie_root_port_1,slot=3,chassis=3,addr=0x3,bus=pcie.0 \
+    -device pcie-root-port,id=pcie_root_port_2,slot=4,chassis=4,addr=0x4,bus=pcie.0  \
+    -chardev socket,id=qmp_id_qmpmonitor1,path=/var/tmp/avocado_kww01fp9/monitor-qmpmonitor1-20190123-022244-PPCvMk0N,server,nowait \
+    -mon chardev=qmp_id_qmpmonitor1,mode=control  \
+    -chardev socket,id=qmp_id_catch_monitor,path=/var/tmp/avocado_kww01fp9/monitor-catch_monitor-20190123-022244-PPCvMk0N,server,nowait \
+    -mon chardev=qmp_id_catch_monitor,mode=control \
+    -device pvpanic,ioport=0x505,id=idKWHdZy  \
+    -chardev socket,id=serial_id_serial0,path=/var/tmp/avocado_kww01fp9/serial-serial0-20190123-022244-PPCvMk0N,server,nowait \
+    -device isa-serial,chardev=serial_id_serial0  \
+    -chardev socket,id=seabioslog_id_20190123-022244-PPCvMk0N,path=/var/tmp/avocado_kww01fp9/seabios-20190123-022244-PPCvMk0N,server,nowait \
+    -device isa-debugcon,chardev=seabioslog_id_20190123-022244-PPCvMk0N,iobase=0x402 \
+    -device pcie-root-port,id=pcie.0-root-port-5,slot=5,chassis=5,addr=0x5,bus=pcie.0 \
+    -device qemu-xhci,id=usb1,bus=pcie.0-root-port-5,addr=0x0 \
+    -device pcie-root-port,id=pcie.0-root-port-6,slot=6,chassis=6,addr=0x6,bus=pcie.0 \
+    -device virtio-scsi-pci,id=virtio_scsi_pci0,bus=pcie.0-root-port-6,addr=0x0 \
+    -blockdev node-name=file_image1,driver=file,cache.direct=on,cache.no-flush=off,filename=/home/kvm_autotest_root/images/rhel80-64-virtio-scsi-install-test.qcow2,aio=threads \
+    -blockdev node-name=drive_image1,driver=qcow2,cache.direct=on,cache.no-flush=off,file=file_image1 \
+    -device scsi-hd,id=image1,drive=drive_image1,write-cache=on,bus=virtio_scsi_pci0.0 \
+    -blockdev driver=file,cache.direct=on,cache.no-flush=off,filename=/home/kvm_autotest_root/images/data.raw,node-name=data_disk \
+    -blockdev driver=raw,node-name=disk1,file=data_disk,cache.direct=on,cache.no-flush=off \
+    -device scsi-hd,drive=disk1,id=data_disk,write-cache=on,bus=virtio_scsi_pci0.0 \
+    -device pcie-root-port,id=pcie.0-root-port-7,slot=7,chassis=7,addr=0x7,bus=pcie.0 \
+    -device virtio-net-pci,mac=9a:63:64:65:66:67,id=idDQ4Oke,vectors=4,netdev=idaNEvdg,bus=pcie.0-root-port-7,addr=0x0  \
+    -netdev tap,id=idaNEvdg,vhost=on \
+    -m 18432  \
+    -smp 12,maxcpus=12,cores=6,threads=1,sockets=2  \
+    -cpu 'SandyBridge',+kvm_pv_unhalt \
+    -device usb-tablet,id=usb-tablet1,bus=usb1.0,port=1  \
+    -vnc :0  \
+    -rtc base=utc,clock=host,driftfix=slew  \
+    -boot order=cdn,once=c,menu=off,strict=off \
+    -enable-kvm \
+    -monitor stdio \
+    -device pcie-root-port,id=pcie.0-root-port-10,slot=10,chassis=10,addr=0x10,bus=pcie.0 \
+    -device virtio-scsi-pci,id=virtio_scsi_pci2,bus=pcie.0-root-port-10,addr=0x0 \
+    -blockdev driver=file,cache.direct=on,cache.no-flush=off,filename=/home/kvm_autotest_root/iso/linux/RHEL-8.0-20190116.1-x86_64-dvd1.iso,node-name=cd_disk1,read-only=on \
+    -blockdev driver=raw,node-name=cd1,file=cd_disk1,read-only=on,cache.direct=on,cache.no-flush=off \
+    -device scsi-cd,drive=cd1,bus=virtio_scsi_pci2.0,id=cd_disk1,write-cache=on \
+
 
 
 
