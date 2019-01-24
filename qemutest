@@ -45,8 +45,34 @@
     -device scsi-cd,drive=cd1,bus=virtio_scsi_pci2.0,id=cd_disk1,write-cache=on \
 
 
-
-
+<yihyu> /usr/libexec/qemu-kvm \
+<yihyu> -name 'ppc-block-testvm1' \
+<yihyu> -sandbox off  \
+<yihyu> -machine pseries  \
+<yihyu> -nodefaults  \
+<yihyu> -vga std  \
+<yihyu> -chardev socket,id=qmp_catch_monitorppc1,path=/var/tmp/monitor-catch_monitorppc1,server,nowait \
+<yihyu> -mon chardev=qmp_catch_monitorppc1,mode=control  \
+<yihyu> -chardev socket,id=serial_id_serialppc1,path=/var/tmp/serial-serialppc1,server,nowait \
+<yihyu> -device spapr-vty,reg=0x30000000,chardev=serial_id_serialppc1 \
+<yihyu> -device nec-usb-xhci,id=usbppc1,bus=pci.0,addr=0x3 \
+<yihyu> -blockdev driver=file,filename=/root/rheltest.qcow2,cache.direct=off,cache.no-flush=on,node-name=sysdisk \
+<yihyu> -blockdev driver=qcow2,file=sysdisk,node-name=drive_imageppc1 \
+<yihyu> -device virtio-scsi-pci,id=virtio_scsi_pcippc1,bus=pci.0,addr=0x4 \
+<yihyu> -device scsi-hd,id=imageppc1,drive=drive_imageppc1,werror=stop,rerror=stop \
+<yihyu> -m 8192  \
+<yihyu> -smp 8,cores=4,threads=1,sockets=2  \
+<yihyu> -device usb-tablet,id=usb-tabletppc1,bus=usbppc1.0,port=1  \
+<yihyu> -device usb-kbd,id=usb-kbdppc1,bus=usbppc1.0,port=2  \
+<yihyu> -vnc :1 \
+<yihyu> -rtc base=utc,clock=host  \
+<yihyu> -enable-kvm \
+<yihyu> -qmp tcp:0:4441,server,nowait \
+<yihyu> -netdev tap,id=tap1,script=/etc/qemu-ifup,downscript=/etc/qemu-ifdown,vhost=on \
+<yihyu> -device virtio-net-pci,netdev=tap1,id=nic1,mac=1a:59:0a:4b:5a:94 \
+<yihyu> -serial tcp:0:3331,server,nowait \
+<yihyu> -monitor stdio \
+<yihyu> -boot menu=off,strict=off,order=cdn,once=c \
 
 
 -device virtio-scsi-pci,id=virtio_scsi_pci0,addr=0x4 \
