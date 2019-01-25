@@ -52,6 +52,58 @@ $cli
 
 
 
+
+/usr/libexec/qemu-kvm \
+-name zhenyzha-RHEL-8.0-20181220.1 \
+-sandbox off \
+-machine pseries -m 4G \
+-nodefaults \
+-vga std \
+-device nec-usb-xhci,id=xhci \
+-device usb-tablet,id=usb-tablet0 \
+-device usb-kbd,id=usb-kbd0 \
+-smp 4,cores=4,threads=1,sockets=1 \
+-vnc :30 \
+-monitor stdio \
+-rtc base=utc,clock=host \
+-boot order=cd,menu=off,strict=off \
+-enable-kvm \
+-qmp unix:/var/tmp/qmp-monitor-zhenyzha,server,nowait \
+-qmp tcp:0:3001,server,nowait \
+-device virtio-scsi-pci,id=virtio_scsi_pci0,bus=pci.0,addr=0x4 \
+-blockdev driver=file,cache.direct=off,cache.no-flush=on,filename=guest.qcow2,node-name=my_file \
+-blockdev driver=qcow2,node-name=my,file=my_file \
+-device scsi-hd,drive=my,bus=virtio_scsi_pci0.0,bootindex=0 \
+-device virtio-scsi-pci,id=scsi1,bus=pci.0,addr=0x6 \
+-blockdev driver=file,cache.direct=off,cache.no-flush=on,filename=/home/test/zhenyzha-nfs/disk/disk0,node-name=data_disk \
+-blockdev driver=qcow2,node-name=disk1,file=data_disk \
+-device scsi-hd,drive=disk1,id=driver_disk,bus=scsi1.0 \
+-blockdev driver=file,cache.direct=off,cache.no-flush=on,filename=/home/test/zhenyzha-nfs/disk/disk1,node-name=data_disk2 \
+-blockdev driver=qcow2,node-name=disk2,file=data_disk2 \
+-device scsi-hd,drive=disk2,id=driver_disk2,bus=scsi1.0 \
+-blockdev driver=file,cache.direct=off,cache.no-flush=on,filename=/home/test/zhenyzha-nfs/disk/disk2,node-name=blk_data_disk \
+-blockdev driver=qcow2,node-name=disk3,file=blk_data_disk \
+-device virtio-blk-pci,scsi=off,bus=pci.0,addr=0x9,drive=disk3,id=blk1 \
+-blockdev driver=file,cache.direct=off,cache.no-flush=on,filename=/home/test/zhenyzha-nfs/disk/disk3,node-name=blk_data_disk2 \
+-blockdev driver=qcow2,node-name=disk4,file=blk_data_disk2 \
+-device virtio-blk-pci,scsi=off,bus=pci.0,addr=0x10,drive=disk4,id=blk2 \
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #!/bin/bash
 PATH=/bin:/sbin:/usr/bin:/usr/sbin
 export PATH
