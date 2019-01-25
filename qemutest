@@ -76,9 +76,9 @@
 
 
 -device virtio-scsi-pci,id=virtio_scsi_pci0,addr=0x4 \
--blockdev driver=file,cache.direct=off,cache.no-flush=on,filename=data.qcow2,node-name=my_file \  磁盘内容
--blockdev driver=qcow2,node-name=my,file=my_file \
--device scsi-hd,drive=my,bus=virtio_scsi_pci0.0,bootindex=0 \    磁盘框架指定盘片(驱动)
+-blockdev driver=file,cache.direct=off,cache.no-flush=on,filename=data.qcow2,node-name=my_file \  指定host文件设备，指定连接节点。
+-blockdev driver=qcow2,node-name=my,file=my_file \               指定上面file在host中的驱动类型，分配连接节点供guest连接，
+-device scsi-hd,drive=my,bus=virtio_scsi_pci0.0,bootindex=0 \    指定guest中磁盘设备，模拟类型scsi/blk
 
 -blockdev driver=file,cache.direct=off,cache.no-flush=on,filename=data2.qcow2,node-name=my_file2 \  磁盘内容
 -blockdev driver=qcow2,node-name=my2,file=my_file2 \
