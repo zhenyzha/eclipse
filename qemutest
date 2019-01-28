@@ -231,3 +231,34 @@ x86 virtio-scsi-pci 两块blockdev
 -blockdev driver=file,cache.direct=off,cache.no-flush=on,filename=/home/test/zhenyzha-nfs/disk/disk_6,node-name=disk_0 \
 -blockdev driver=qcow2,node-name=my0,file=disk_0 \
 -device scsi-hd,drive=my0,bus=scsi-pci-0.0,id=target0 \
+
+
+P9上安装rhel7with physical_block_size/logical_block_size option	
+/usr/libexec/qemu-kvm \
+-name zhenyzha-RHEL7.6-Server-ppc64 \
+-sandbox off \
+-machine pseries \
+-m 8G \
+-nodefaults \
+-machine pseries,max-cpu-compat=power8 \
+-object iothread,id=iothread1 \
+-vga std \
+-device nec-usb-xhci,id=xhci \
+-device usb-tablet,id=usb-tablet0 \
+-device usb-kbd,id=usb-kbd0 \
+-smp 4,cores=4,threads=1,sockets=1 \
+-vnc :30 \
+-monitor stdio \
+-rtc base=utc,clock=host \
+-boot order=cd,menu=off,strict=off \
+-enable-kvm \
+-qmp unix:/var/tmp/qmp-monitor-zhenyzha,server,nowait \
+-qmp tcp:0:3001,server,nowait \
+-device virtio-scsi-pci,bus=pci.0,addr=0x06,id=scsi-pci-0 \
+-netdev tap,id=hostnet0,vhost=on,script=/etc/qemu-ifup \
+-device virtio-net-pci,netdev=hostnet0,id=virtio-net-pci0,mac=40:f2:e9:5d:9c:07 \
+-blockdev driver=raw,file.driver=file,node-name=drive_cd1,cache.no-flush=on,cache.direct=off,file.filename=/mnt/os/RHEL7.6-Server-ppc64.iso,read-only=on \
+-device scsi-cd,id=cd1,drive=drive_cd1 \
+-blockdev driver=file,cache.direct=off,cache.no-flush=on,node-name=file_win1,filename=guest.qcow2 \
+-blockdev driver=qcow2,node-name=drive-virtio-disk1,file=file_win1 \
+-device virtio-blk-pci,bus=pci.0,drive=drive-virtio-disk1,iothread=iothread1,id=virtio-disk1,logical_block_size=512,physical_block_size=4096 \
