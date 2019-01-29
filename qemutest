@@ -206,6 +206,37 @@ virtio-blk-pci 两块blockdev
 -blockdev driver=qcow2,node-name=drive-virtio0-0-2,file=disk_1 \
 
 
+
+virtio-blk-pci 两块-drive
+/usr/libexec/qemu-kvm \
+-name zhenyzha-RHEL7.6-Server-ppc64 \
+-sandbox off \
+-machine pseries \
+-m 8G \
+-nodefaults \
+-machine pseries,max-cpu-compat=power8 \
+-object iothread,id=iothread1 \
+-vga std \
+-device nec-usb-xhci,id=xhci \
+-device usb-tablet,id=usb-tablet0 \
+-device usb-kbd,id=usb-kbd0 \
+-smp 4,cores=4,threads=1,sockets=1 \
+-vnc :30 \
+-monitor stdio \
+-rtc base=utc,clock=host \
+-boot order=cd,menu=off,strict=off \
+-enable-kvm \
+-qmp unix:/var/tmp/qmp-monitor-zhenyzha,server,nowait \
+-qmp tcp:0:3001,server,nowait \
+-device virtio-scsi-pci,bus=pci.0,addr=0x06,id=scsi-pci-0 \
+-drive id=my0,format=qcow2,media=disk,if=none,file=guest.qcow2 \
+-device virtio-blk-pci,scsi=off,bus=pci.0,addr=0x5,drive=my0,id=virtio0-0-1,bootindex=0 \
+-drive id=my2,format=qcow2,media=disk,if=none,file=guest3.qcow2 \
+-device virtio-blk-pci,scsi=off,bus=pci.0,addr=0x7,drive=my2,id=virtio0-0-2,bootindex=1 \
+
+
+
+
 x86 virtio-scsi-pci 两块blockdev
 /usr/libexec/qemu-kvm \
 -name zhenyzha-RHEL-8.0-20181220.1 \
