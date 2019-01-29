@@ -157,7 +157,7 @@ virtio-scsi-pci 一块blockdev 一块drive
 -vnc :30 \
 -monitor stdio \
 -rtc base=utc,clock=host \
--boot order=cd,menu=off,strict=off \
+-boot order=cdn,menu=off,strict=off \
 -enable-kvm \
 -qmp unix:/var/tmp/qmp-monitor-zhenyzha,server,nowait \
 -qmp tcp:0:3001,server,nowait \
@@ -189,7 +189,7 @@ virtio-blk-pci 两块blockdev
 -vnc :30 \
 -monitor stdio \
 -rtc base=utc,clock=host \
--boot order=cd,menu=off,strict=off \
+-boot order=cdn,menu=off,strict=off \
 -enable-kvm \
 -qmp unix:/var/tmp/qmp-monitor-zhenyzha,server,nowait \
 -qmp tcp:0:3001,server,nowait \
@@ -216,7 +216,7 @@ x86 virtio-scsi-pci 两块blockdev
 -vnc :30 \
 -monitor stdio \
 -rtc base=utc,clock=host \
--boot order=cd,menu=off,strict=off \
+-boot order=cdn,menu=off,strict=off \
 -enable-kvm \
 -qmp unix:/var/tmp/qmp-monitor-zhenyzha,server,nowait \
 -qmp tcp:0:3001,server,nowait \
@@ -250,7 +250,7 @@ P9上安装rhel7with physical_block_size/logical_block_size option
 -vnc :30 \
 -monitor stdio \
 -rtc base=utc,clock=host \
--boot order=cd,menu=off,strict=off \
+-boot order=cdn,menu=off,strict=off \
 -enable-kvm \
 -qmp unix:/var/tmp/qmp-monitor-zhenyzha,server,nowait \
 -qmp tcp:0:3001,server,nowait \
