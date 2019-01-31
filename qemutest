@@ -213,7 +213,6 @@ virtio-blk-pci 两块-drive
 /usr/libexec/qemu-kvm \
 -name zhenyzha-RHEL7.6-Server-ppc64 \
 -sandbox off \
--machine pseries \
 -m 8G \
 -nodefaults \
 -machine pseries,max-cpu-compat=power8 \
@@ -270,7 +269,6 @@ P9上安装rhel7with physical_block_size/logical_block_size option
 /usr/libexec/qemu-kvm \
 -name zhenyzha-RHEL7.6-Server-ppc64 \
 -sandbox off \
--machine pseries \
 -m 8G \
 -nodefaults \
 -machine pseries,max-cpu-compat=power8 \
