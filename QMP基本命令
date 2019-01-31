@@ -1,4 +1,4 @@
-telnet localhost 4441
+telnet localhost 3001
 
 { "execute": "qmp_capabilities" }
 { "return": {}}  返回
