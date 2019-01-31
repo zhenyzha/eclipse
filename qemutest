@@ -118,13 +118,15 @@ Blockdev usage:
     -blockdev driver=file,cache.direct=off,cache.no-flush=on,filename=winutils.iso,node-name=cd_file,read-only=on 
     -blockdev driver=raw,node-name=cd,file=cd_file,read-only=on
 
-virtio-scsi
+-drive virtio-scsi
 -device virtio-scsi-pci,bus=pci.0,addr=0x07,id=scsi-pci-1 \      (scsi模式可以有256个target，每个target可以有16384个lun)
--drive file=/home/zhenyzha/data2.qcow2,format=qcow2,if=none,aio=native,cache=none,media=disk,werror=stop,rerror=stop,id=drive-1 \
+-drive id=drive-1,format=qcow2,if=none,aio=native,media=disk,cache=none,werror=stop,rerror=stop,file=/home/zhenyzha/data2.qcow2 \
 -device scsi-hd,bus=scsi-pci-1.0,id=scsi-hd-1,drive=drive-1,channel=0,scsi-id=0,lun=1,bootindex=0 \
--drive file=/home/zhenyzha/data3.img,format=qcow2,if=none,aio=native,cache=none,media=disk,werror=stop,rerror=stop,id=drive-2 \
+-drive id=drive-2,format=qcow2,if=none,aio=native,media=disk,cache=none,werror=stop,rerror=stop,file=/home/zhenyzha/data3.img \
 -device scsi-hd,bus=scsi-pci-1.0,id=scsi-hd-2,drive=drive-2,channel=0,scsi-id=0,lun=2,bootindex=1 \
 #备注：virtio-scsi-pci是raid卡上的一个target通道，不同的id区分不同的通道。
+
+
 
 
 virtio-blk                                                       （blk模式PCI：存储设备 1：1对应，PCI总线32条最多32个磁盘占用）
