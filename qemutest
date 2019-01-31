@@ -265,6 +265,35 @@ x86 virtio-scsi-pci 两块blockdev
 -device scsi-hd,drive=my0,bus=scsi-pci-0.0,id=target0 \
 
 
+x86 virtio-blk 两块blockdev
+/usr/libexec/qemu-kvm \
+-name zhenyzha-RHEL7.6-Server-x86_64 \
+-sandbox off \
+-m 8G \
+-nodefaults \
+-vga std \
+-smp 4,cores=4,threads=1,sockets=1 \
+-vnc :30 \
+-monitor stdio \
+-rtc base=utc,clock=host \
+-boot order=cdn,menu=off,strict=off \
+-enable-kvm \
+-qmp unix:/var/tmp/qmp-monitor-zhenyzha,server,nowait \
+-qmp tcp:0:3001,server,nowait \
+-device virtio-scsi-pci,bus=pci.0,addr=0x06,id=scsi-pci-0 \
+-netdev tap,id=hostnet0,vhost=on,script=/etc/qemu-ifup \
+-device virtio-net-pci,netdev=hostnet0,id=virtio-net-pci0,mac=40:f2:e9:5d:9c:07 \
+-blockdev driver=raw,file.driver=file,node-name=drive_cd1,cache.no-flush=on,cache.direct=off,file.filename=/mnt/os/RHEL7.6-Server-x86_64.iso,read-only=on \
+-device scsi-cd,id=cd1,drive=drive_cd1 \
+-device virtio-scsi-pci,id=virtio_scsi_pci0,bus=pci.0,addr=0x4 \
+-blockdev node-name=file_image1,driver=file,cache.direct=on,cache.no-flush=off,filename=guest.raw,aio=threads \
+-blockdev node-name=drive_image1,driver=raw,cache.direct=on,cache.no-flush=off,file=file_image1 \
+-device virtio-blk-pci,bus=pci.0,id=image1,drive=drive_image1,write-cache=on,bootindex=0 \
+-blockdev node-name=file_image2,driver=file,cache.direct=on,cache.no-flush=off,filename=disk1.raw,aio=threads \
+-blockdev node-name=drive_image2,driver=raw,cache.direct=on,cache.no-flush=off,file=file_image2 \
+-device virtio-blk-pci,bus=pci.0,id=image2,drive=drive_image2,write-cache=on\
+
+
 P9上安装rhel7with physical_block_size/logical_block_size option	
 /usr/libexec/qemu-kvm \
 -name zhenyzha-RHEL7.6-Server-ppc64 \
