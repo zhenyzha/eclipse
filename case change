@@ -1,0 +1,13 @@
+RHEL7-95783 - [virtual block][virtio blk] Reboot guest after hotunplug virtual block device .	
+
+4.Check whether the device and disk is in qmp
+   {"execute":"query-pci"}
+   {"execute":"query-block"}
+The fourth step:{"execute": "query-block"} is replaced by {"execute":"query-named-block-nodes"}
+
+
+RHEL7-95795 - [virtual block][virtio blk] Boot guest with readonly disk .	
+		
+Step 6
+-blockdev driver=qcow2,node-name=drive-virtio-disk0,file=file_stg1,read-only=on \  
+need add ,read-only=on  too
