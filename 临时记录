@@ -1,2 +1,101 @@
 zhenyzha https://projects.engineering.redhat.com/browse/ELPPCKVM-1224  https://projects.engineering.redhat.com/browse/ELPPCKVM-1227
 <ngu> zheyzha https://docs.google.com/spreadsheets/d/12GpVkFKTsXXy92vDGY69jmFHWpR16FIMURF61YGS_VU/edit#gid=0
+
+Description of problem:
+Failed to boot qemu drive based NVMe devices.
+
+Version-Release number of selected component (if applicable):
+Host: 4.18.0-68.el8.ppc64le
+Qemu: qemu-kvm-3.1.0-14.module+el8+2788+eb400795
+
+[root@ibm-p8-garrison-03 ~]# modprobe vfio-pci
+
+[  929.945044] VFIO - User Level meta-driver version: 0.3
+
+[root@ibm-p8-garrison-03 ~]# lspci -n -s 0001:01:00.0
+0001:01:00.0 0108: 1c58:0003 (rev 05)
+[root@ibm-p8-garrison-03 ~]# echo "1c58 0003" > /sys/bus/pci/drivers/vfio-pci/new_id
+[root@ibm-p8-garrison-03 ~]# /usr/libexec/qemu-kvm -device vfio-pci,id=pf,host=0001:01:00.0 -monitor stdio
+QEMU 3.1.0 monitor - type 'help' for more information
+(qemu) qemu-kvm: -device vfio-pci,id=pf,host=0001:01:00.0: vfio 0001:01:00.0: failed to open /dev/vfio/1: No such file or directory
+
+the dmesg show:
+[ 1034.566941] EEH: PHB#1 failure detected, location: N/A
+[ 1034.567078] CPU: 0 PID: 782 Comm: kworker/0:1 Kdump: loaded Not tainted 4.18.0-68.el8.ppc64le #1
+[ 1034.567168] Workqueue: events work_for_cpu_fn
+[ 1034.567323] Call Trace:
+[ 1034.567340] [c000001feb5e38c0] [c000000000ca78bc] dump_stack+0xb0/0xf4 (unreliable)
+[ 1034.567382] [c000001feb5e3900] [c000000000042684] eeh_dev_check_failure+0x524/0x5f0
+[ 1034.567424] [c000001feb5e39a0] [c0000000000c1678] pnv_pci_read_config+0x148/0x180
+[ 1034.567468] [c000001feb5e39e0] [c00000000073786c] pci_bus_read_config_word+0x9c/0xf0
+[ 1034.567510] [c000001feb5e3a40] [c0000000007420f8] pci_raw_set_power_state+0xf8/0x300
+[ 1034.567551] [c000001feb5e3ad0] [c00000000074aaf0] pci_set_power_state+0x60/0x250
+[ 1034.567717] [c000001feb5e3b10] [d000000016c91e4c] vfio_pci_probe+0x184/0x270 [vfio_pci]
+[ 1034.567758] [c000001feb5e3bb0] [c00000000075325c] local_pci_probe+0x6c/0x140
+[ 1034.567800] [c000001feb5e3c40] [c00000000015cdf8] work_for_cpu_fn+0x38/0x60
+[ 1034.567835] [c000001feb5e3c70] [c000000000161f64] process_one_work+0x2f4/0x5b0
+[ 1034.567877] [c000001feb5e3d10] [c000000000163570] worker_thread+0x330/0x760
+[ 1034.567911] [c000001feb5e3dc0] [c00000000016c8fc] kthread+0x1ac/0x1c0
+[ 1034.567947] [c000001feb5e3e30] [c00000000000b75c] ret_from_kernel_thread+0x5c/0x80
+[ 1034.567995] EEH: Detected error on PHB#1
+[ 1034.568021] EEH: This PCI device has failed 1 times in the last hour and will be permanently disabled after 5 failures.
+[ 1034.568200] EEH: Notify device drivers to shutdown
+[ 1034.568228] EEH: Beginning: 'error_detected(IO frozen)'
+[ 1034.568256] EEH: PE#fe (PCI 0001:00:00.0): no driver
+[ 1034.568326] EEH: PE#fd (PCI 0001:01:00.0): Invoking vfio-pci->error_detected(IO frozen)
+[ 1034.568490] EEH: PE#fd (PCI 0001:01:00.0): vfio-pci driver reports: 'can recover'
+[ 1034.568531] EEH: Finished:'error_detected(IO frozen)' with aggregate recovery state:'can recover'
+[ 1034.568725] EEH: Collect temporary log
+[ 1034.568751] PHB3 PHB#1 Diag-data (Version: 1)
+[ 1034.568778] brdgCtl:     0000ffff
+[ 1034.568799] UtlSts:      00200000 00000000 00000000
+[ 1034.568827] RootSts:     ffffffff ffffffff ffffffff ffffffff 0000ffff
+[ 1034.568976] RootErrSts:  ffffffff ffffffff ffffffff
+[ 1034.569004] RootErrLog:  ffffffff ffffffff ffffffff ffffffff
+[ 1034.569038] RootErrLog1: ffffffff 0000000000000000 0000000000000000
+[ 1034.569190] nFir:        0000808000000000 0030006e00000000 0000800000000000
+[ 1034.569224] PhbSts:      0000001800000000 0000001800000000
+[ 1034.569251] Lem:         0000020000080000 42498e367f502eae 0000000000080000
+[ 1034.569286] OutErr:      0000002000000000 0000002000000000 0000000000000000 0000000000000000
+[ 1034.569461] InAErr:      0000000020000000 0000000020000000 8080000000000000 0000000000000000
+[ 1034.569509] EEH: Reset without hotplug activity
+[ 1034.591608] vfio-pci 0001:01:00.0: Refused to change power state, currently in D3
+[ 1034.591668] iommu: Removing device 0001:01:00.0 from group 1
+[ 1041.202376] EEH: Sleep 5s ahead of partial hotplug
+[ 1046.251710] pci 0001:01:00.0: [1c58:0003] type 00 class 0x010802
+[ 1046.251909] pci 0001:01:00.0: reg 0x10: [mem 0x3fe080020000-0x3fe080023fff 64bit]
+[ 1046.252133] pci 0001:01:00.0: reg 0x20: [mem 0x3fe080030000-0x3fe08003ffff 64bit]
+[ 1046.252224] pci 0001:01:00.0: reg 0x30: [mem 0x00000000-0x0001ffff pref]
+[ 1046.252281] pci 0001:01:00.0: enabling Extended Tags
+[ 1046.252488] pci 0001:01:00.0: BAR0 [mem size 0x00004000 64bit]: requesting alignment to 0x10000
+[ 1046.253363] iommu: Adding device 0001:01:00.0 to group 1
+[ 1046.254382] pci 0001:01:00.0: can't claim BAR 0 [mem size 0x00004000 64bit]: no address assigned
+[ 1046.254598] pci 0001:01:00.0: BAR 6: assigned [mem 0x3fe080000000-0x3fe08001ffff pref]
+[ 1046.254640] pci 0001:01:00.0: BAR 0: assigned [mem 0x3fe080020000-0x3fe080023fff 64bit]
+[ 1046.254750] pci 0001:01:00.0: BAR 4: assigned [mem 0x3fe080030000-0x3fe08003ffff 64bit]
+[ 1046.255592] nvme nvme1: pci function 0001:01:00.0
+[ 1046.255632] EEH: Notify device drivers the completion of reset
+[ 1046.255670] EEH: Beginning: 'slot_reset'
+[ 1046.255691] EEH: PE#fe (PCI 0001:00:00.0): no driver
+[ 1046.255719] EEH: PE#fd (PCI 0001:01:00.0): driver bound too late
+[ 1046.255753] EEH: Finished:'slot_reset' with aggregate recovery state:'none'
+[ 1046.255789] EEH: Notify device driver to resume
+[ 1046.255817] EEH: Beginning: 'resume'
+[ 1046.255838] EEH: PE#fe (PCI 0001:00:00.0): no driver
+[ 1046.255865] EEH: PE#fd (PCI 0001:01:00.0): driver bound too late
+[ 1046.255899] EEH: Finished:'resume'
+[ 1046.255899] EEH: Recovery successful.
+[ 1046.255989] nvme 0001:01:00.0: enabling device (0140 -> 0142)
+[ 1046.256070] nvme 0001:01:00.0: Using 64-bit DMA iommu bypass
+[ 1048.780239] nvme nvme1: 128/0/0 default/read/poll queues
+[ 1048.799889]  nvme1n2: p1
+
+Linux ibm-p8-garrison-03.rhts.eng.bos.redhat.com 3.10.0-957.el7.ppc64le #1 SMP Thu Oct 4 20:51:36 UTC 2018 ppc64le ppc64le ppc64le GNU/Linux
+QEMU emulator version 2.12.0 (qemu-kvm-rhev-2.12.0-23.el7)
+
+
+ zhenyzha ,ping
+<micai> Bug 1657081 
+<micai> 我看你刚报了一个bug，产生得calltrace和用ib卡得时候是一样得
+<micai> 但是我的这个最后刚被关成notabug，你报得bug(Bug 1678189),和dwg商讨了得吗？
+<micai> modprobe vfio-pci disable_idle_d3=1 这个是在garrison机器上面加载vfio driver得workround.你试试这个命令。
