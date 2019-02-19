@@ -99,3 +99,4 @@ QEMU emulator version 2.12.0 (qemu-kvm-rhev-2.12.0-23.el7)
 <micai> 我看你刚报了一个bug，产生得calltrace和用ib卡得时候是一样得
 <micai> 但是我的这个最后刚被关成notabug，你报得bug(Bug 1678189),和dwg商讨了得吗？
 <micai> modprobe vfio-pci disable_idle_d3=1 这个是在garrison机器上面加载vfio driver得workround.你试试这个命令。
+Kickstart Metadata: ignoredisk=--drives=disk/by-id/nvme-HUSPR3216AHP301_STM0001B6780
