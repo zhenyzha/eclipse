@@ -100,3 +100,81 @@ QEMU emulator version 2.12.0 (qemu-kvm-rhev-2.12.0-23.el7)
 <micai> 但是我的这个最后刚被关成notabug，你报得bug(Bug 1678189),和dwg商讨了得吗？
 <micai> modprobe vfio-pci disable_idle_d3=1 这个是在garrison机器上面加载vfio driver得workround.你试试这个命令。
 Kickstart Metadata: ignoredisk=--drives=disk/by-id/nvme-HUSPR3216AHP301_STM0001B6780
+
+0001:01:00.0 Non-Volatile memory controller: HGST, Inc. Ultrastar SN100 Series NVMe SSD (rev 05) (prog-if 02 [NVM Express])
+	Subsystem: IBM PCIe3 1.6TB NVMe Flash Adapter
+	Physical Slot: Slot2
+	Control: I/O- Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr+ Stepping- SERR+ FastB2B- DisINTx-
+	Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+	Latency: 0
+	Interrupt: pin A routed to IRQ 493
+	NUMA node: 0
+	Region 0: Memory at 3fe080020000 (64-bit, non-prefetchable) [size=16K]
+	Region 4: Memory at 3fe080030000 (64-bit, non-prefetchable) [size=64K]
+	[virtual] Expansion ROM at 3fe080000000 [disabled] [size=128K]
+	Capabilities: [c0] Power Management version 3
+		Flags: PMEClk- DSI- D1- D2- AuxCurrent=0mA PME(D0-,D1-,D2-,D3hot-,D3cold-)
+		Status: D0 NoSoftRst+ PME-Enable- DSel=0 DScale=0 PME-
+	Capabilities: [70] Express (v2) Endpoint, MSI 00
+		DevCap:	MaxPayload 256 bytes, PhantFunc 0, Latency L0s unlimited, L1 unlimited
+			ExtTag+ AttnBtn- AttnInd- PwrInd- RBE+ FLReset+ SlotPowerLimit 0.000W
+		DevCtl:	Report errors: Correctable+ Non-Fatal+ Fatal+ Unsupported+
+			RlxdOrd- ExtTag+ PhantFunc- AuxPwr- NoSnoop- FLReset-
+			MaxPayload 256 bytes, MaxReadReq 512 bytes
+		DevSta:	CorrErr- UncorrErr- FatalErr- UnsuppReq- AuxPwr- TransPend-
+		LnkCap:	Port #0, Speed 8GT/s, Width x4, ASPM L0s L1, Exit Latency L0s <4us, L1 <4us
+			ClockPM- Surprise- LLActRep- BwNot- ASPMOptComp+
+		LnkCtl:	ASPM Disabled; RCB 64 bytes Disabled- CommClk-
+			ExtSynch- ClockPM- AutWidDis- BWInt- AutBWInt-
+		LnkSta:	Speed 8GT/s, Width x4, TrErr- Train- SlotClk- DLActive- BWMgmt- ABWMgmt-
+		DevCap2: Completion Timeout: Range AB, TimeoutDis+, LTR-, OBFF Not Supported
+			 AtomicOpsCap: 32bit- 64bit- 128bitCAS-
+		DevCtl2: Completion Timeout: 50us to 50ms, TimeoutDis+, LTR-, OBFF Disabled
+			 AtomicOpsCtl: ReqEn-
+		LnkCtl2: Target Link Speed: 8GT/s, EnterCompliance- SpeedDis-
+			 Transmit Margin: Normal Operating Range, EnterModifiedCompliance- ComplianceSOS-
+			 Compliance De-emphasis: -6dB
+		LnkSta2: Current De-emphasis Level: -6dB, EqualizationComplete+, EqualizationPhase1+
+			 EqualizationPhase2+, EqualizationPhase3+, LinkEqualizationRequest-
+	Capabilities: [c8] MSI: Enable- Count=1/32 Maskable+ 64bit+
+		Address: 0000000000000000  Data: 0000
+		Masking: 00000000  Pending: 00000000
+	Capabilities: [e0] MSI-X: Enable+ Count=129 Masked-
+		Vector table: BAR=0 offset=00002000
+		PBA: BAR=0 offset=00003000
+	Capabilities: [60] Vital Product Data
+		Product Name: HUSPR3216AHP301         
+		Read-only fields:
+			[PN] Part number: 00MH994
+			[EC] Engineering changes: P00209A
+			[FC] Unknown: 45 43 35 37
+			[FN] Unknown: 30 30 4d 48 39 39 33
+			[CC] Unknown: 35 38 43 43
+			[SN] Serial number: YL10ZC5CM780
+			[Z0] Unknown: 49 42 4d 31 30 31 34 30 34 46 36
+			[Z1] Unknown: 33
+			[Z2] Unknown: 33 32 30 30
+			[Z3] Unknown: 31 37 2e 35
+			[Z4] Unknown: 30
+			[Z5] Unknown: 30
+			[Z6] Unknown: 4b 4d 49 50 50 31 30 36
+			[MN] Manufacture ID: STM0001B6780
+			[RV] Reserved: checksum good, 0 byte(s) reserved
+		Read/write fields:
+			[V1] Vendor specific: 000000
+			[YA] Asset tag: 00000000000000000000000000000000
+			[RW] Read-write area: 44 byte(s) free
+		End
+	Capabilities: [100 v2] Advanced Error Reporting
+		UESta:	DLP- SDES- TLP- FCP- CmpltTO- CmpltAbrt- UnxCmplt- RxOF- MalfTLP- ECRC- UnsupReq- ACSViol-
+		UEMsk:	DLP- SDES- TLP- FCP- CmpltTO- CmpltAbrt- UnxCmplt- RxOF- MalfTLP- ECRC- UnsupReq- ACSViol-
+		UESvrt:	DLP+ SDES- TLP- FCP- CmpltTO- CmpltAbrt- UnxCmplt- RxOF- MalfTLP+ ECRC- UnsupReq- ACSViol-
+		CESta:	RxErr- BadTLP- BadDLLP- Rollover- Timeout- NonFatalErr-
+		CEMsk:	RxErr- BadTLP- BadDLLP- Rollover- Timeout- NonFatalErr+
+		AERCap:	First Error Pointer: 00, ECRCGenCap+ ECRCGenEn+ ECRCChkCap+ ECRCChkEn+
+			MultHdrRecCap- MultHdrRecEn- TLPPfxPres- HdrLogCap-
+		HeaderLog: 00000000 00000000 00000000 00000000
+	Capabilities: [180 v1] #19
+	Kernel driver in use: nvme
+	Kernel modules: nvme
+
