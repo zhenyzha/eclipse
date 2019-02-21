@@ -1,0 +1,9 @@
+借nvme机器添加参数
+ibm-p8-garrison-03.rhts.eng.bos.redhat.com 
+Kickstart Metadata: ignoredisk=--drives=disk/by-id/nvme-HUSPR3216AHP301_STM0001B6780
+
+ibm-p8-garrison-04.rhts.eng.bos.redhat.com 
+Kickstart Metadata: ignoredisk=--drives=disk/by-id/nvme-HUSPR3216AHP301_STM0001B67D7
+
+在P8上加载vfio
+modprobe vfio-pci disable_idle_d3=1
