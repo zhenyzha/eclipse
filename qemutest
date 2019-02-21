@@ -325,3 +325,33 @@ P9上安装rhel7with physical_block_size/logical_block_size option
 -blockdev driver=file,cache.direct=off,cache.no-flush=on,filename=data.qcow2,node-name=my_file1 \
 -blockdev driver=qcow2,node-name=my1,file=my_file1 \
 -device virtio-blk-pci,scsi=off,bus=pci.0,addr=0x7,drive=my1,iothread=iothread1,id=zhneg1 \
+
+-serial 参数添加  与 nc -U 参数使用
+/usr/libexec/qemu-kvm \
+-name zhenyzha-RHEL8.0-Server-ppc64 \
+-sandbox off \
+-m 8G \
+-nodefaults \
+-nographic \
+-vga none \
+-device nec-usb-xhci,id=xhci \
+-device usb-tablet,id=usb-tablet0 \
+-device usb-kbd,id=usb-kbd0 \
+-smp 16,cores=16,threads=1,sockets=1 \
+-monitor stdio \
+-rtc base=utc,clock=host \
+-boot order=cdn,menu=off,strict=off \
+-enable-kvm \
+-qmp unix:/var/tmp/qmp-monitor-zhenyzha,server,nowait \
+-qmp tcp:0:3001,server,nowait \
+-device virtio-scsi-pci,bus=pci.0,addr=0x06,id=scsi-pci-0 \
+-netdev tap,id=hostnet0,vhost=on,script=/etc/qemu-ifup \
+-device virtio-net-pci,netdev=hostnet0,id=virtio-net-pci0,mac=40:f2:e9:5d:9c:07 \
+-blockdev driver=raw,file.driver=file,node-name=drive_cd1,cache.no-flush=on,cache.direct=off,file.filename=/mnt/os/RHEL-8.0.0-20190213.0-ppc64le-dvd1.iso,read-only=on \
+-device scsi-cd,id=cd1,drive=drive_cd1 \
+-blockdev driver=file,cache.direct=off,cache.no-flush=on,filename=guest.qcow2,node-name=my_file \
+-blockdev driver=qcow2,node-name=my,file=my_file \
+-device scsi-hd,drive=my,bus=scsi-pci-0.0,id=zhneg,bootindex=0 \
+-serial unix:/var/tmp/serial-zhenyzha,server,nowait \
+
+nc -U /var/tmp/serial-zhenyzha（on host）
