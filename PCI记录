@@ -1,0 +1,4 @@
+qemu-kvm: -device usb-kbd,id=virtio-keyboard: No 'usb-bus' bus found for device 'usb-kbd'
+
+> -device nec-usb-xhci,id=xhci \     （add usb-bus）
+> -device usb-kbd,id=virtio-keyboard \
