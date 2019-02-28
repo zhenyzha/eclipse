@@ -68,9 +68,10 @@ for i in `seq 0 255`;do qemu-img create -f qcow2 "/home/iscsi_mount/stg$i.qcow2"
 检查check block info via QMP.
 # {"execute":"query-block"}
 
+热拔出鼠标键盘
+{"execute":"device_del","arguments":{"id":"usb-tablet0"}}     
+{"execute":"device_del","arguments":{"id":"usb-kbd0"}} 
 
-“Hello All, and I’m really excited to be part of redhat and hope to start contributing my part as I settle in and
-learn more about qemu-kvm. Prior to joining redhat, I worked as a storage test team leaderin Lenovo, Operation and 
-Maintenance Engineer at NetApp, etc. Working years over 5 years. I spend most of my spare time with my family. 
-I will try my best to work well in the future. I hope you can give me some advice and I wish to work with you happily! 
-Thank you!
+{"execute":"device_add","arguments":{'driver':'usb-kbd','id':'usb-kbd0'}} 
+{"execute":"device_add","arguments":{'driver':'usb-tablet','id':'usb-tablet0'}} 
+
