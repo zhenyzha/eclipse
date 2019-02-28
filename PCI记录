@@ -2,3 +2,36 @@ qemu-kvm: -device usb-kbd,id=virtio-keyboard: No 'usb-bus' bus found for device 
 
 > -device nec-usb-xhci,id=xhci \     （add usb-bus）
 > -device usb-kbd,id=virtio-keyboard \
+(qemu) info usb
+  Device 0.1, Port 1, Speed 480 Mb/s, Product QEMU USB Keyboard, ID: virtio-keyboard
+(qemu) info qtree
+      dev: nec-usb-xhci, id "xhci"
+        msi = "auto"
+        msix = "auto"
+        superspeed-ports-first = true
+        force-pcie-endcap = false
+        intrs = 16 (0x10)
+        slots = 64 (0x40)
+        streams = true
+        p2 = 4 (0x4)
+        p3 = 4 (0x4)
+        addr = 01.0
+        romfile = ""
+        rombar = 1 (0x1)
+        multifunction = false
+        command_serr_enable = true
+        x-pcie-lnksta-dllla = true
+        x-pcie-extcap-init = true
+        class USB controller, addr 00:01.0, pci id 1033:0194 (sub 1af4:1100)
+        bar 0: mem at 0x81020000 [0x81023fff]
+        bus: xhci.0
+          type usb-bus
+          dev: usb-kbd, id "virtio-keyboard"
+            usb_version = 2 (0x2)
+            display = ""
+            port = ""
+            serial = ""
+            full-path = true
+            msos-desc = true
+            addr 0.1, port 1, speed 480, name QEMU USB Keyboard, attached
+
