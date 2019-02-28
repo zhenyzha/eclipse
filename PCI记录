@@ -63,10 +63,10 @@ blk-pci  driver
 -netdev tap,id=hostnet0,vhost=on,script=/etc/qemu-ifup \
 -device virtio-net-pci,netdev=hostnet0,id=virtio-net-pci0,mac=40:f2:e9:5d:9c:07 \
 -blockdev driver=raw,file.driver=file,node-name=drive_cd1,cache.no-flush=on,cache.direct=off,file.filename=/mnt/os/RHEL-8.0.0-20190213.0-ppc64le-dvd1.iso,read-only=on \
--device scsi-cd,id=cd1,drive=drive_cd1,bootindex=0 \
+-device scsi-cd,id=cd1,drive=drive_cd1 \
 -blockdev driver=file,cache.direct=off,cache.no-flush=on,filename=guest.qcow2,node-name=my_file \
 -blockdev driver=qcow2,node-name=my,file=my_file \
--device scsi-hd,drive=my,bus=scsi-pci-0.0,id=zhneg \
+-device scsi-hd,drive=my,bus=scsi-pci-0.0,id=zhneg,bootindex=0 \
 -drive id=my0,format=qcow2,media=disk,if=none,file=guest7.qcow2 \
 -device scsi-hd,id=target0,drive=my0,bus=scsi-pci-0.0 \
 -blockdev driver=file,cache.direct=off,cache.no-flush=on,filename=data.qcow2,node-name=disk_1 \
@@ -74,6 +74,7 @@ blk-pci  driver
 -device virtio-blk-pci,scsi=off,bus=pci.0,addr=0x8,drive=drive-virtio0-0-2,id=virtio0-0-2 \
 -drive id=my4,format=qcow2,media=disk,if=none,file=data2.qcow2 \
 -device virtio-blk-pci,scsi=off,bus=pci.0,addr=0x5,drive=my4,id=virtio0-0-1 \
+(qemu) info qtree
 (qemu) info qtree
 bus: main-system-bus
   type System
@@ -465,8 +466,9 @@ bus: main-system-bus
         irq = 4352 (0x1100)
 
 
+
 (qemu) info pci
-  Bus  0, device   0, function 0:
+   Bus  0, device   0, function 0:
     VGA controller: PCI device 1234:1111
       PCI subsystem 1af4:1100
       BAR0: 32 bit prefetchable memory at 0x80000000 [0x80ffffff].
@@ -919,18 +921,19 @@ bus: main-system-bus
   /dr-connector[268435480] (spapr-drc-cpu)
 (qemu) 
 
+
 (qemu) info block
-my0 (#block202): guest7.qcow2 (qcow2)
+my0 (#block263): guest7.qcow2 (qcow2)
     Attached to:      target0
     Cache mode:       writeback
 
-my4 (#block406): data2.qcow2 (qcow2)
+my4 (#block422): data2.qcow2 (qcow2)
     Attached to:      /machine/peripheral/virtio0-0-1/virtio-backend
     Cache mode:       writeback
 
 drive_cd1: /mnt/os/RHEL-8.0.0-20190213.0-ppc64le-dvd1.iso (raw, read-only)
     Attached to:      cd1
-    Removable device: locked, tray closed
+    Removable device: not locked, tray closed
     Cache mode:       writeback, ignore flushes
 
 my: guest.qcow2 (qcow2)
