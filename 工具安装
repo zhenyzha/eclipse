@@ -5,8 +5,8 @@ yum install -y git
 git clone https://gitlab.cee.redhat.com/kvm-qe/kar.git && cd kar && ./Bootstrap.sh --develop --venv --upstream --verbose
 git clone https://gitlab.cee.redhat.com/yhong/vmt.git
 
-yum install flex
-yum install bison
+yum -y install flex bison
+
 
 yum module disable virt:8.0.0 -y
 
