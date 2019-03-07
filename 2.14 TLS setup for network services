@@ -1,0 +1,63 @@
+mkdir -p /etc/pki/qemu
+cd /etc/pki/qemu/
+
+2.14.1 Setup the Certificate Authority
+
+yum -y install gnutls-utils
+certtool --generate-privkey > ca-key.pem
+[root@ibm-p8-garrison-03 qemu]# cat > ca.info <<EOF
+> cn = redhat
+> ca
+> cert_signing_key
+> EOF
+
+[root@ibm-p8-garrison-03 qemu]# certtool --generate-self-signed \
+--load-privkey ca-key.pem \
+--template ca.info \
+--outfile ca-cert.pem \
+
+# cat > server-redhat.info <<EOF
+organization = redhat
+cn = ibm-p8-garrison-03.rhts.eng.bos.redhat.com
+dns_name = rhts
+dns_name = rhts.eng.bos.redhat.comm
+ip_address = 10.16.68.28
+ip_address = 10.16.71.254
+ip_address = 2620:52:0:1040:ea74:a0ee:37f3:189e
+ip_address = fe80::6f4f:73b7:adfd:a1ab
+tls_www_server
+encryption_key
+signing_key
+EOF
+
+# certtool --generate-privkey > server-redhat-key.pem
+# certtool --generate-certificate \
+--load-ca-certificate ca-cert.pem \
+--load-ca-privkey ca-key.pem \
+--load-privkey server-redhat-key.pem \
+--template server-redhat.info \
+--outfile server-redhat-cert.pem
+
+# cat > client-redhat.info <<EOF
+country = GB
+state = London
+locality = City Of London
+organization = redhat
+cn = ibm-p8-garrison-03.rhts.eng.bos.redhat.com
+tls_www_client
+encryption_key
+signing_key
+EOF
+
+# certtool --generate-privkey > client-redhat-key.pem
+# certtool --generate-certificate \
+--load-ca-certificate ca-cert.pem \
+--load-ca-privkey ca-key.pem \
+--load-privkey client-redhat-key.pem \
+--template client-redhat.info \
+--outfile client-redhat-cert.pem
+
+qemu中使用
+$QEMU -object tls-creds-x509,id=tls0,dir=/etc/pki/qemu,endpoint=server
+$QEMU -object tls-creds-x509,id=tls0,dir=/etc/pki/qemu,endpoint=client
+$QEMU -vnc 0.0.0.0:0,tls-creds=tls0
