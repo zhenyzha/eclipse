@@ -1,3 +1,12 @@
+RHEL7-86439 case error
+ Implement TLS support to NBD Build-in Server	
+ There are too many errors in the step, causing the case to fail to execute.
+ 1.No TLS configuration steps
+ 2.The command line is too simple, there is no explanatory information, 
+ and you can't refer to writing the full command line.
+ 3.Start nbd server in monitor steps command error，parameter error，causes the overall case to fail to execute.
+
+
 mkdir -p /etc/pki/qemu
 cd /etc/pki/qemu/
 
