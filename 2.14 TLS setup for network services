@@ -57,6 +57,11 @@ EOF
 --template client-redhat.info \
 --outfile client-redhat-cert.pem
 
+mv server-redhat-cert.pem server-cert.pem
+mv client-redhat-cert.pem client-cert.pem
+mv server-redhat-key.pem server-key.pem
+mv client-redhat-key.pem client-key.pem
+
 qemu中使用
 $QEMU -object tls-creds-x509,id=tls0,dir=/etc/pki/qemu,endpoint=server
 $QEMU -object tls-creds-x509,id=tls0,dir=/etc/pki/qemu,endpoint=client
