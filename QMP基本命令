@@ -105,25 +105,15 @@ telnet localhost 3002
 -blockdev
 src
 -blockdev driver=file,cache.direct=off,cache.no-flush=on,filename=guest.qcow2,node-name=my_file \
--blockdev driver=qcow2,node-name=my,file=my_file \
--device scsi-hd,drive=my,bus=scsi-pci-0.0,id=zhneg \
+-blockdev driver=qcow2,node-name=my0,file=my_file \
+-device scsi-hd,drive=my0,bus=scsi-pci-0.0,id=zhneg \
 
 telnet localhost 3001
 { "execute": "qmp_capabilities" }
 等目的端配置后再执行：
-{'execute':'blockdev-create','arguments':{'options': {'driver':'file','filename':'mr1.qcow2','size':21474836480},'job-id':'job1'}}
-{'execute':'blockdev-add','arguments':{'driver':'file','node-name':'driveimage1','filename':'mr1.qcow2'}}
-{'execute':'blockdev-create','arguments':{'options': {'cluster-size':2097152, 'driver': 'qcow2', 'file': 'driveimage1', 'size': 21474836480},'job-id': 'job2'}}
-{'execute':'blockdev-add','arguments':{'driver':'qcow2','node-name':'disk1','file':'driveimage1'}}
-{'execute':'job-dismiss','arguments':{'id':'job1'}}
-{'execute':'job-dismiss','arguments':{'id':'job2'}}
-{ "execute": "drive-mirror", "arguments": { "device": "my", "target": "nbd://10.16.67.230:3333/my", "sync": "full", "format": "raw", "mode": "existing", "job-id": "j1"}}
-{"timestamp": {"seconds": 1552016200, "microseconds": 184445}, "event": "JOB_STATUS_CHANGE", "data": {"status": "created", "id": "j1"}}
-{"timestamp": {"seconds": 1552016200, "microseconds": 184659}, "event": "JOB_STATUS_CHANGE", "data": {"status": "running", "id": "j1"}}
-{"return": {}}
+{"execute":"blockdev-add","arguments":{"driver":"nbd","node-name":"mirror","server":{"type":"inet","host":"10.16.67.230","port":"3333"},"export":"my"}}
+{"execute": "blockdev-mirror", "arguments": { "device": "my0","target": "mirror", "sync": "full", "job-id":"j1" } }
 
-{"timestamp": {"seconds": 1552016207, "microseconds": 703936}, "event": "JOB_STATUS_CHANGE", "data": {"status": "ready", "id": "j1"}}
-{"timestamp": {"seconds": 1552016207, "microseconds": 703994}, "event": "BLOCK_JOB_READY", "data": {"device": "j1", "len": 21474836480, "offset": 21474836480, "speed": 0, "type": "mirror"}}
 (qemu) migrate -d tcp:0:6666
 (qemu) info migrate
 
