@@ -15,10 +15,10 @@ cd /etc/pki/qemu/
 yum -y install gnutls-utils
 certtool --generate-privkey > ca-key.pem
 [root@ibm-p8-garrison-03 qemu]# cat > ca.info <<EOF
-> cn = redhat
-> ca
-> cert_signing_key
-> EOF
+cn = redhat
+ca
+cert_signing_key
+EOF
 
 [root@ibm-p8-garrison-03 qemu]# certtool --generate-self-signed \
 --load-privkey ca-key.pem \
