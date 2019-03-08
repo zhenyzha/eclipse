@@ -75,3 +75,69 @@ for i in `seq 0 255`;do qemu-img create -f qcow2 "/home/iscsi_mount/stg$i.qcow2"
 {"execute":"device_add","arguments":{'driver':'usb-kbd','id':'usb-kbd0'}} 
 {"execute":"device_add","arguments":{'driver':'usb-tablet','id':'usb-tablet0'}} 
 
+
+
+nbd制作"drive-mirror"并migrate
+-drive 
+src
+-device virtio-scsi-pci,bus=pci.0,addr=0x06,id=scsi-pci-0 \
+-drive id=my0,format=qcow2,media=disk,if=none,file=guest.qcow2 \
+-device scsi-hd,id=target0,drive=my0,bus=scsi-pci-0.0,bootindex=0 \
+
+telnet localhost 3001
+{ "execute": "qmp_capabilities" }
+等目的端配置后再执行:
+{ "execute": "drive-mirror", "arguments": { "device": "my0", "target": "nbd://10.16.67.230:3333/my", "sync": "full", "format": "raw", "mode": "existing", "job-id": "j1"}}
+
+(qemu) migrate -d tcp:0:6666
+
+Des
+-incoming tcp:0:6666 \
+-device virtio-scsi-pci,bus=pci.0,addr=0x06,id=scsi-pci-0 \
+-drive id=my,format=qcow2,media=disk,if=none,file=guest8.qcow2 \
+-device scsi-hd,id=target0,drive=my,bus=scsi-pci-0.0,bootindex=0 \
+
+telnet localhost 3002
+{ "execute": "qmp_capabilities" }
+{ "execute": "nbd-server-start", "arguments": { "addr": { "type": "inet", "data": { "host": "10.16.67.230", "port": "3333" } } } }
+{ "execute": "nbd-server-add", "arguments": { "device": "my", "writable": true } }
+
+-blockdev
+src
+-blockdev driver=file,cache.direct=off,cache.no-flush=on,filename=guest.qcow2,node-name=my_file \
+-blockdev driver=qcow2,node-name=my,file=my_file \
+-device scsi-hd,drive=my,bus=scsi-pci-0.0,id=zhneg \
+
+telnet localhost 3001
+{ "execute": "qmp_capabilities" }
+等目的端配置后再执行：
+{'execute':'blockdev-create','arguments':{'options': {'driver':'file','filename':'mr1.qcow2','size':21474836480},'job-id':'job1'}}
+{'execute':'blockdev-add','arguments':{'driver':'file','node-name':'driveimage1','filename':'mr1.qcow2'}}
+{'execute':'blockdev-create','arguments':{'options': {'cluster-size':2097152, 'driver': 'qcow2', 'file': 'driveimage1', 'size': 21474836480},'job-id': 'job2'}}
+{'execute':'blockdev-add','arguments':{'driver':'qcow2','node-name':'disk1','file':'driveimage1'}}
+{'execute':'job-dismiss','arguments':{'id':'job1'}}
+{'execute':'job-dismiss','arguments':{'id':'job2'}}
+{ "execute": "drive-mirror", "arguments": { "device": "my", "target": "nbd://10.16.67.230:3333/my", "sync": "full", "format": "raw", "mode": "existing", "job-id": "j1"}}
+{"timestamp": {"seconds": 1552016200, "microseconds": 184445}, "event": "JOB_STATUS_CHANGE", "data": {"status": "created", "id": "j1"}}
+{"timestamp": {"seconds": 1552016200, "microseconds": 184659}, "event": "JOB_STATUS_CHANGE", "data": {"status": "running", "id": "j1"}}
+{"return": {}}
+
+{"timestamp": {"seconds": 1552016207, "microseconds": 703936}, "event": "JOB_STATUS_CHANGE", "data": {"status": "ready", "id": "j1"}}
+{"timestamp": {"seconds": 1552016207, "microseconds": 703994}, "event": "BLOCK_JOB_READY", "data": {"device": "j1", "len": 21474836480, "offset": 21474836480, "speed": 0, "type": "mirror"}}
+(qemu) migrate -d tcp:0:6666
+(qemu) info migrate
+
+Des:
+-incoming tcp:0:6666 \
+-device virtio-scsi-pci,bus=pci.0,addr=0x06,id=scsi-pci-0 \
+-blockdev driver=file,cache.direct=off,cache.no-flush=on,filename=guest2.qcow2,node-name=my_file \
+-blockdev driver=qcow2,node-name=my,file=my_file \
+-device scsi-hd,drive=my,bus=scsi-pci-0.0,id=zhneg \
+telnet localhost 3002
+{ "execute": "qmp_capabilities" }
+
+{ "execute": "nbd-server-start", "arguments": { "addr": { "type": "inet", "data": { "host": "10.16.67.230", "port": "3333" } } } }
+
+{ "execute": "nbd-server-add", "arguments": { "device": "my", "writable": true } }
+
+
