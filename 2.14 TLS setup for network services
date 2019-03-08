@@ -27,13 +27,13 @@ certtool --generate-privkey > ca-key.pem
 
 # cat > server-redhat.info <<EOF
 organization = redhat
-cn = ibm-p8-garrison-03.rhts.eng.bos.redhat.com
+cn = localhost
 dns_name = rhts
 dns_name = rhts.eng.bos.redhat.comm
-ip_address = 10.16.68.28
+ip_address = 10.16.67.230
 ip_address = 10.16.71.254
-ip_address = 2620:52:0:1040:ea74:a0ee:37f3:189e
-ip_address = fe80::6f4f:73b7:adfd:a1ab
+ip_address = 2620:52:0:1040:51bb:1c66:13e2:8f66
+ip_address = fe80::27f4:6b19:9112:90db
 tls_www_server
 encryption_key
 signing_key
@@ -52,7 +52,7 @@ country = GB
 state = London
 locality = City Of London
 organization = redhat
-cn = ibm-p8-garrison-03.rhts.eng.bos.redhat.com
+cn = localhost
 tls_www_client
 encryption_key
 signing_key
