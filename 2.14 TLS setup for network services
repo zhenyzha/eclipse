@@ -29,7 +29,7 @@ EOF
 organization = redhat
 cn = localhost
 dns_name = rhts
-dns_name = rhts.eng.bos.redhat.comm
+dns_name = rhts.eng.bos.redhat.com
 ip_address = 10.16.67.230
 ip_address = 10.16.71.254
 ip_address = 2620:52:0:1040:51bb:1c66:13e2:8f66
