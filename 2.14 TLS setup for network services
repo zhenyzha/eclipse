@@ -4,6 +4,12 @@ NBD img 创建需要增加preallocation参数，因为NBD 本身不会标记未�
 但写入时因为NBD本身映射为raw格式，所以后面qcow2格式的未被标记的会写入不进去。
 full 格式会把所有空间都写入qcow2格式的0
 falloc 格式会把所有空间都标记为qcow2格式，但不会真正写入
+[root@ibm-p8-garrison-03 zhenyzha-nfs]# du -h full.qcow2 
+21G	full.qcow2
+[root@ibm-p8-garrison-03 zhenyzha-nfs]# du -h falloc.qcow2 
+21G	falloc.qcow2
+[root@ibm-p8-garrison-03 zhenyzha-nfs]# du -h guest.qcow2 
+2.3G	guest.qcow2
 
 RHEL7-86439 case error
  Implement TLS support to NBD Build-in Server	
