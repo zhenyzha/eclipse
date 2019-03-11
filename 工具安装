@@ -7,8 +7,9 @@ git clone https://gitlab.cee.redhat.com/yhong/vmt.git
 
 yum -y install flex bison
 
+dnf info virt
+dnf module enable virt:rhel
 
-yum module disable virt:8.0.0 -y
 
 python3 vmt/Star2RunPlus.py
 
