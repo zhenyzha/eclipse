@@ -1,3 +1,8 @@
+Create image on NBD server side:
+# qemu-img create -f qcow2  -o preallocation=full/falloc test.qcow2 20G
+NBD img 创建需要增加preallocation参数，因为NBD 本身不会标记未被使用的元数据，所以当使用qcow2格式映射时，NBD只会读取系统使用的大小，
+但写入时因为NBD本身映射为raw格式，所以后面qcow2格式的未被标记的会写入不进去。
+
 RHEL7-86439 case error
  Implement TLS support to NBD Build-in Server	
  There are too many errors in the step, causing the case to fail to execute.
