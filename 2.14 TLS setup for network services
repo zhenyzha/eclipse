@@ -11,6 +11,9 @@ falloc 格式会把所有空间都标记为qcow2格式，但不会真正写入
 [root@ibm-p8-garrison-03 zhenyzha-nfs]# du -h guest.qcow2 
 2.3G	guest.qcow2
 
+ Create snapshot in client based on the nbd file
+# qemu-img create -f qcow2 -F qcow2 sn1.qcow2 -b nbd:host_name_of_server:9000
+
 RHEL7-86439 case error
  Implement TLS support to NBD Build-in Server	
  There are too many errors in the step, causing the case to fail to execute.
