@@ -1,4 +1,5 @@
 yum install -y libguestfs-tools libguestfs*
+export LIBGUESTFS_BACKEND=direct
 yum -y install flex bison fio
 
 curl -L http://password.corp.redhat.com/RH-IT-Root-CA.crt -o /etc/pki/ca-trust/source/anchors/RH-IT-Root-CA.crt
