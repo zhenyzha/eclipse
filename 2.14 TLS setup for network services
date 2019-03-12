@@ -24,7 +24,7 @@ RHEL7-86439 case error
  
  
 iscsi 配置
-iSCSI Initiator:
+iscsi target:
 [root@ibm-p8-garrison-05 ~]# targetcli
 /iscsi/iqn.20...19b3e3a0/tpg1> cd /iscsi/
 /iscsi> /backstores/fileio/
@@ -63,6 +63,10 @@ Created network portal 10.16.68.32:3260.
 /iscsi/iqn.20.../tpg1/portals> exit 
 [root@ibm-p8-garrison-05 ~]# systemctl restart target.service 
 
+
+iSCSI Initiator:
+]# qemu-img info iscsi://10.16.68.32:3260/iqn.2003-01.org.linux-iscsi.ibm-p8-garrison-05.ppc64le:server/0
+]# qemu-img create -f qcow2 iscsi://10.16.68.32:3260/iqn.2003-01.org.linux-iscsi.ibm-p8-garrison-05.ppc64le:server/0 20G
 
 
 mkdir -p /etc/pki/qemu
