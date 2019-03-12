@@ -1,3 +1,6 @@
+yum install -y libguestfs-tools libguestfs*
+yum -y install flex bison fio
+
 curl -L http://password.corp.redhat.com/RH-IT-Root-CA.crt -o /etc/pki/ca-trust/source/anchors/RH-IT-Root-CA.crt
 update-ca-trust enable
 update-ca-trust extract
@@ -5,7 +8,7 @@ yum install -y git
 git clone https://gitlab.cee.redhat.com/kvm-qe/kar.git && cd kar && ./Bootstrap.sh --develop --venv --upstream --verbose
 git clone https://gitlab.cee.redhat.com/yhong/vmt.git
 
-yum -y install flex bison
+之后使用dnf命令：
 
 dnf info virt
 dnf module enable virt:rhel
