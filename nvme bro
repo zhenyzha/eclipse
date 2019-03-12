@@ -1,4 +1,5 @@
 借nvme机器添加参数
+ll /dev/disk/by-id 查看nvme的id
 ibm-p8-garrison-03.rhts.eng.bos.redhat.com 
 Kickstart Metadata: ignoredisk=--drives=disk/by-id/nvme-HUSPR3216AHP301_STM0001B6780
 
