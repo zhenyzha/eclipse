@@ -21,6 +21,48 @@ RHEL7-86439 case error
  2.The command line is too simple, there is no explanatory information, 
  and you can't refer to writing the full command line.
  3.Start nbd server in monitor steps command error，parameter error，causes the overall case to fail to execute.
+ 
+ 
+iscsi 配置
+iSCSI Initiator:
+[root@ibm-p8-garrison-05 ~]# targetcli
+/iscsi/iqn.20...19b3e3a0/tpg1> cd /iscsi/
+/iscsi> /backstores/fileio/
+/backstores/fileio> create lun0.img /home/lun0.img 20G
+Created fileio lun0.img with size 21474836480
+/backstores/fileio> cd /iscsi/
+/iscsi> create iqn.2003-01.org.linux-iscsi.ibm-p8-garrison-05.ppc64le:server
+Created target iqn.2003-01.org.linux-iscsi.ibm-p8-garrison-05.ppc64le:server.
+Created TPG 1.
+Default portal not created, TPGs within a target cannot share ip:port.
+/iscsi> cd iqn.2003-01.org.linux-iscsi.ibm-p8-garrison-05.ppc64le:server/
+/iscsi/iqn.20...pc64le:server> ls
+o- iqn.2003-01.org.linux-iscsi.ibm-p8-garrison-05.ppc64le:server ......................................................... [TPGs: 1]
+  o- tpg1 ................................................................................................... [no-gen-acls, no-auth]
+    o- acls .............................................................................................................. [ACLs: 0]
+    o- luns .............................................................................................................. [LUNs: 0]
+    o- portals ........................................................................................................ [Portals: 0]
+/iscsi/iqn.20...pc64le:server> tpg1/luns create 
+/backstores/fileio/block1    /backstores/fileio/block2    /backstores/fileio/lun0.img  NETBOOT_METHOD.TXT           
+RECIPE.TXT                   anaconda-ks.cfg              original-ks.cfg              add_mapped_luns=             
+lun=                         storage_object=              
+/iscsi/iqn.20...pc64le:server> tpg1/luns create /backstores/fileio/lun0.img 
+Created LUN 0.
+/iscsi/iqn.20...pc64le:server> cd tpg1/
+/iscsi/iqn.20...e:server/tpg1> set attribute authentication=0
+Parameter authentication is now '0'.
+/iscsi/iqn.20...e:server/tpg1> set attribute demo_mode_write_protect=0
+Parameter demo_mode_write_protect is now '0'.
+/iscsi/iqn.20...e:server/tpg1> set attribute generate_node_acls=1
+Parameter generate_node_acls is now '1'.
+/iscsi/iqn.20...pc64le:server> tpg1/
+/iscsi/iqn.20...e:server/tpg1> portals/
+/iscsi/iqn.20.../tpg1/portals> create 10.16.68.32(如果报错则：delete 0.0.0.0 3260)
+Using default IP port 3260
+Created network portal 10.16.68.32:3260.
+/iscsi/iqn.20.../tpg1/portals> exit 
+[root@ibm-p8-garrison-05 ~]# systemctl restart target.service 
+
 
 
 mkdir -p /etc/pki/qemu
