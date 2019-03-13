@@ -60,6 +60,8 @@ Parameter generate_node_acls is now '1'.
 /iscsi/iqn.20.../tpg1/portals> create 10.16.68.32(如果报错则：delete 0.0.0.0 3260)
 Using default IP port 3260
 Created network portal 10.16.68.32:3260.
+/iscsi/iqn.20...e:server/tpg1> cd /
+/ saveconfig
 /iscsi/iqn.20.../tpg1/portals> exit 
 [root@ibm-p8-garrison-05 ~]# systemctl restart target.service 
 
@@ -67,6 +69,38 @@ Created network portal 10.16.68.32:3260.
 iSCSI Initiator:
 ]# qemu-img info iscsi://10.16.68.32:3260/iqn.2003-01.org.linux-iscsi.ibm-p8-garrison-05.ppc64le:server/0
 ]# qemu-img create -f qcow2 iscsi://10.16.68.32:3260/iqn.2003-01.org.linux-iscsi.ibm-p8-garrison-05.ppc64le:server/0 20G
+
+
+在没有任何磁盘的情况下启动guest，Hotplug the disk
+ 1). hotplug the drive 
+ {
+    "execute": "blockdev-add",
+        "arguments": {
+            "node-name": "drive2",
+            "driver": "qcow2",
+            "file": {
+                "driver":"iscsi",
+                "transport":"tcp",
+                "portal":"10.16.68.32", 
+                "target":"iqn.2003-01.org.linux-iscsi.ibm-p8-garrison-05.ppc64le:server",
+                "lun":0
+            }
+        }
+}
+{"return": {}}
+
+2). hotplug the device
+{
+    "execute":"device_add",
+        "arguments":{
+            "driver":"virtio-blk-pci",
+            "drive":"drive2",
+            "id":"blk1"
+                   }
+}
+
+
+
 
 
 mkdir -p /etc/pki/qemu
