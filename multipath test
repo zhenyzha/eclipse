@@ -1,0 +1,39 @@
+Local:
+        1.Install the OS locally using multipath
+           After the installation is complete, guest.raw enters the OS again.
+           result  —— hang
+        2.boot OS add multipath -device 
+Command is as follows：  
+
+-blockdev driver=file,cache.direct=off,cache.no-flush=on,filename=data.raw,node-name=my_file \
+-blockdev driver=raw,node-name=my,file=my_file \
+-device scsi-hd,drive=my,bus=scsi-pci-0.0,id=zhneg1,serial=test,share-rw=on \
+-blockdev driver=file,cache.direct=off,cache.no-flush=on,filename=data.raw,node-name=my_file2 \
+-blockdev driver=raw,node-name=my2,file=my_file2 \
+-device scsi-hd,drive=my2,bus=scsi-pci-0.0,id=zhneg2,serial=test,share-rw=on \
+        
+ [root@dhcp71-39 ~]# lsblk
+NAME          MAJ:MIN RM SIZE RO TYPE MOUNTPOINT
+sda             8:0    0  20G  0 disk 
+|-sda1          8:1    0   4M  0 part 
+|-sda2          8:2    0   1G  0 part /boot
+`-sda3          8:3    0  19G  0 part 
+  |-rhel-root 253:0    0  17G  0 lvm  /
+  `-rhel-swap 253:1    0   2G  0 lvm  [SWAP]
+sdb             8:16   0  20G  0 disk 
+sdc             8:32   0  20G  0 disk        
+[root@dhcp71-39 ~]# multipath -v3
+Mar 14 10:36:15 | set open fds limit to 1048576/1048576
+Mar 14 10:36:15 | loading /lib64/multipath/libchecktur.so checker
+Mar 14 10:36:15 | loading /lib64/multipath/libprioconst.so prioritizer
+Mar 14 10:36:15 | foreign library "nvme" loaded successfully
+Mar 14 10:36:15 | sda: blacklisted, udev property missing
+Mar 14 10:36:15 | sdb: blacklisted, udev property missing
+Mar 14 10:36:15 | sdc: blacklisted, udev property missing
+Mar 14 10:36:15 | dm-0: blacklisted, udev property missing
+Mar 14 10:36:15 | dm-1: blacklisted, udev property missing
+===== no paths =====
+Mar 14 10:36:15 | libdevmapper version 1.02.155-RHEL8 (2019-01-04)
+Mar 14 10:36:15 | DM multipath kernel driver v1.13.0
+Mar 14 10:36:15 | unloading const prioritizer
+Mar 14 10:36:15 | unloading tur checker
