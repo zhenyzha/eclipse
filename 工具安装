@@ -18,3 +18,6 @@ dnf module enable virt:rhel
 python3 vmt/Star2RunPlus.py
 
 ./python --install-virtqemu 'qemu-kvm-3.1.0-5.module+el8+2708+fbd828c6'
+
+[root@ibm-p8-garrison-06 cfg]# pwd
+/var/lib/avocado/data/avocado-vt/test-providers.d/downloads/io-github-autotest-qemu/qemu/tests/cfg
