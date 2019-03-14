@@ -167,7 +167,7 @@ virtio-scsi-pci 一块blockdev 一块drive
 -device virtio-scsi-pci,bus=pci.0,addr=0x07,id=scsi-pci-1 \
 -netdev tap,id=hostnet0,vhost=on,script=/etc/qemu-ifup \
 -device virtio-net-pci,netdev=hostnet0,id=virtio-net-pci0,mac=40:f2:e9:5d:9c:07 \
--blockdev driver=raw,file.driver=file,node-name=drive_cd1,cache.no-flush=on,cache.direct=off,file.filename=/mnt/os/RHEL-8.0.0-20190228.1-ppc64le-dvd1.iso,read-only=on \
+-blockdev driver=raw,file.driver=file,node-name=drive_cd1,cache.no-flush=on,cache.direct=off,file.filename=/mnt/os/RHEL-8.0.0-20190313.0-ppc64le-dvd1.iso,read-only=on \
 -device scsi-cd,id=cd1,drive=drive_cd1,bootindex=0 \
 -blockdev driver=file,cache.direct=off,cache.no-flush=on,filename=guest.qcow2,node-name=my_file \
 -blockdev driver=qcow2,node-name=my,file=my_file \
