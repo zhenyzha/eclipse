@@ -11,3 +11,6 @@ python3 ConfigTest.py --testcase=fio_perf --guestname=RHEL.8.0 --imageformat=qco
 python3 ConfigTest.py --testcase=fio_perf --guestname=RHEL.8.0 --imageformat=qcow2,raw \
 --nicmodel=virtio_net --driveformat=virtio_scsi,virtio_blk --image_backend=filesystem,iscsi,nfs \
 --platform=ppc64le \
+
+JOB ID     : 42caefedf2886c99c51e19df9b8e6f7bc20ba9f2
+JOB LOG    : /home/zhenyzha/kar/workspace/job-results/job-2019-03-15T04.13-42caefe/job.log
