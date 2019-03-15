@@ -1,0 +1,13 @@
+部署执行环境：
+]# ./Bootstrap.sh --upstream --venv --develop --verbose
+]# source /home/zhenyzha/kar/workspace/bin/activate
+
+查询将会执行的测试：
+python3 ConfigTest.py --testcase=fio_perf --guestname=RHEL.8.0 --imageformat=qcow2,raw \
+--nicmodel=virtio_net --driveformat=virtio_scsi,virtio_blk --image_backend=filesystem,iscsi,nfs \
+--platform=ppc64le --dryrun \
+
+执行测试：
+python3 ConfigTest.py --testcase=fio_perf --guestname=RHEL.8.0 --imageformat=qcow2,raw \
+--nicmodel=virtio_net --driveformat=virtio_scsi,virtio_blk --image_backend=filesystem,iscsi,nfs \
+--platform=ppc64le \
