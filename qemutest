@@ -1,3 +1,5 @@
+创建256个qcow2:for i in `seq 0 255`;do qemu-img create -f qcow2 "/home/iscsi_mount/stg$i.qcow2" 1G;done
+
 /usr/libexec/qemu-kvm \
     -S  \
     -name 'avocado-vt-vm1' \
