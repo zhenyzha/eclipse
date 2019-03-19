@@ -14,3 +14,25 @@ python3 ConfigTest.py --testcase=fio_perf --guestname=RHEL.8.0 --imageformat=qco
 
 JOB ID     : 42caefedf2886c99c51e19df9b8e6f7bc20ba9f2
 JOB LOG    : /home/zhenyzha/kar/workspace/job-results/job-2019-03-15T04.13-42caefe/job.log
+
+
+../kar/internal_cfg/test_loops/diskformat_qcow2.cfg
+
+
+<ngu> zhenyzha__ ../kar/workspace/job-results/latest/test-results
+<ngu> ../kar/workspace/var/lib/avocado/data/avocado-vt/test-providers.d/downloads/io-github-autotest-qemu/qemu/tests, 这个是qemu的test case
+<ngu> 另外需要注册一下https://github.com/
+<zhenyzha> github我有账号
+<ngu> https://github.com/avocado-framework/avocado-vt
+<ngu> https://github.com/autotest/tp-qemu/
+<ngu> 登录之后可以watch一下
+<zhenyzha> 好，我看到了
+<ngu> 这样就能收到里面的动态了
+<ngu> https://github.com/autotest/tp-qemu/pulls
+<ngu> 这个就是所有的pull request
+<ngu> avocado-vt的也一样
+<ngu> tp-qemu主要是咱们大组的人提交的，avocado-vt还有libvirt的
+<zhenyzha> 哦
+<zhenyzha> 咱们用的一般在tp-qemu中是把
+<ngu> case在tp-qemu里，avocado-vt是框架层的
+<ngu> 有时间可以进去看一下别人是怎么review patch的，先学习一下
