@@ -36,3 +36,6 @@ JOB LOG    : /home/zhenyzha/kar/workspace/job-results/job-2019-03-15T04.13-42cae
 <zhenyzha> 咱们用的一般在tp-qemu中是把
 <ngu> case在tp-qemu里，avocado-vt是框架层的
 <ngu> 有时间可以进去看一下别人是怎么review patch的，先学习一下
+
+nohup python ConfigTest.py --category=diskformat_qcow2 --guestname=RHEL.7.7 --imageformat=qcow2 \
+--nicmodel=virtio_net --driveformat=virtio_scsi --image_backend=filesystem --platform=ppc64le --clone=yes --dryrun &
