@@ -43,3 +43,12 @@ nohup python ConfigTest.py --category=diskformat_qcow2 --guestname=RHEL.7.7 --im
 (workspace) [root@ibm-p8-garrison-02 test-results]# pwd
 /home/zhenyzha/kar/workspace/job-results/latest/test-results(log位置)
 /kar/workspace/avocado-vt/scripts/scan_results.py 检查log的脚本.
+
+
+<ngu> zhenyzha "python3 -m http.server 8002" 这样也可以实时看log
+<ngu> 通过在host上提供http服务的方式，8002指的是port号
+<ngu> 我网页访问的时候就是10.16.200.238:8002
+<ngu> host ip:port
+<ngu> 另外，之后测试跑完了要导出结果需要用到kar目录地下的脚本：./import2nfs.py -d ngu/test
+<ngu> -d 后面是自己起的名字，ppc的机器最后会被导出到10.0.136.47下
+<ngu> 所以像上面我那样导出后再访问就是：http://10.0.136.47/ngu/test
