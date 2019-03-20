@@ -42,3 +42,4 @@ nohup python ConfigTest.py --category=diskformat_qcow2 --guestname=RHEL.7.7 --im
 
 (workspace) [root@ibm-p8-garrison-02 test-results]# pwd
 /home/zhenyzha/kar/workspace/job-results/latest/test-results(log位置)
+/kar/workspace/avocado-vt/scripts/scan_results.py 检查log的脚本.
