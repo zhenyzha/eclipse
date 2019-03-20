@@ -52,3 +52,9 @@ nohup python ConfigTest.py --category=diskformat_qcow2 --guestname=RHEL.7.7 --im
 <ngu> 另外，之后测试跑完了要导出结果需要用到kar目录地下的脚本：./import2nfs.py -d ngu/test
 <ngu> -d 后面是自己起的名字，ppc的机器最后会被导出到10.0.136.47下
 <ngu> 所以像上面我那样导出后再访问就是：http://10.0.136.47/ngu/test
+
+
+
+if you wanna test block with blockdev ,
+pls git clone https://gitlab.cee.redhat.com/yhong/blockdev-kar.git, 
+then ./Bootstrap.sh --develop --venv --upstream --verbose
