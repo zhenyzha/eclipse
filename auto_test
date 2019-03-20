@@ -58,3 +58,21 @@ nohup python ConfigTest.py --category=diskformat_qcow2 --guestname=RHEL.7.7 --im
 if you wanna test block with blockdev ,
 pls git clone https://gitlab.cee.redhat.com/yhong/blockdev-kar.git, 
 then ./Bootstrap.sh --develop --venv --upstream --verbose
+
+
+'089-Host_RHEL.m7.u7.qcow2.virtio_scsi.up.virtio_net.Guest.RHEL.7.7.ppc64le.io-github-autotest-qemu.qemu_disk_img.info.change_block_interface' Finshed 2019-03-20 05:30:20 2019-03-20 05:32:15 ERROR 114.44314
+
+(workspace) [root@ibm-p8-garrison-02 kar]# ./import2nfs.py -d zhenyzha/test
+pinging built-in NFSs, please be patient
+/tmp/LOG is successfully created.
+successfully mounted core-shares.eng.bos.redhat.com:/exports/rt-354546 to /tmp/LOG
+copying /home/zhenyzha/kar/workspace/job-results/latest to /tmp/LOG/zhenyzha/test , this may take a while.
+cp: cannot create regular file ‘/tmp/LOG/zhenyzha/test/test-results/057-Host_RHEL.m7.u7.qcow2.virtio_scsi.up.virtio_net.Guest.RHEL.7.7.ppc64le.io-github-autotest-qemu.qemu_disk_img.convert.base_to_qcow2.cache_mode.none/screendumps_avocado-vt-vm1_78139_iter0/0001.jpg’: Unknown error 528
+Traceback (most recent call last):
+  File "./import2nfs.py", line 134, in <module>
+    import_log(args.source, args.dest, args.force, args.nfs)
+  File "./import2nfs.py", line 82, in import_log
+    subprocess.check_call(['cp', '-RTn', realpath, log_dest])
+  File "/usr/lib64/python2.7/subprocess.py", line 542, in check_call
+    raise CalledProcessError(retcode, cmd)
+subprocess.CalledProcessError: Command '['cp', '-RTn', '/home/zhenyzha/kar/workspace/job-results/job-2019-03-19T22.39-93fe1cf', '/tmp/LOG/zhenyzha/test']' returned non-zero exit status 1
