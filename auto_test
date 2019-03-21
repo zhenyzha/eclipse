@@ -76,3 +76,16 @@ Traceback (most recent call last):
   File "/usr/lib64/python2.7/subprocess.py", line 542, in check_call
     raise CalledProcessError(retcode, cmd)
 subprocess.CalledProcessError: Command '['cp', '-RTn', '/home/zhenyzha/kar/workspace/job-results/job-2019-03-19T22.39-93fe1cf', '/tmp/LOG/zhenyzha/test']' returned non-zero exit status 1
+
+
+
+'09-Host_RHEL.m7.u7.qcow2.virtio_blk.up.virtio_net.Guest.RHEL.7.7.ppc64le.io-github-autotest-qemu.fio_perf.single_disk.file_system_block.localfs' Finshed 2019-03-20 10:50:03 2019-03-20 10:50:05 ERROR 2.433422
+'10-Host_RHEL.m7.u7.qcow2.virtio_blk.up.virtio_net.Guest.RHEL.7.7.ppc64le.io-github-autotest-qemu.fio_perf.single_disk.file_system_block.nfs_block' Finshed 2019-03-20 10:50:05 2019-03-20 10:50:07 ERROR 2.221682
+'11-Host_RHEL.m7.u7.qcow2.virtio_scsi.up.virtio_net.Guest.RHEL.7.7.ppc64le.io-github-autotest-qemu.fio_perf.single_disk.file_system_block.localfs' Finshed 2019-03-20 10:50:07 2019-03-20 10:50:10 ERROR 2.3363
+'12-Host_RHEL.m7.u7.qcow2.virtio_scsi.up.virtio_net.Guest.RHEL.7.7.ppc64le.io-github-autotest-qemu.fio_perf.single_disk.file_system_block.nfs_block' Finshed 2019-03-20 10:50:10 2019-03-20 10:50:12 ERROR 2.22859
+'13-Host_RHEL.m7.u7.raw.virtio_blk.up.virtio_net.Guest.RHEL.7.7.ppc64le.io-github-autotest-qemu.fio_perf.single_disk.file_system_block.localfs' Finshed 2019-03-20 10:50:12 2019-03-20 10:50:14 ERROR 2.304709
+'14-Host_RHEL.m7.u7.raw.virtio_blk.up.virtio_net.Guest.RHEL.7.7.ppc64le.io-github-autotest-qemu.fio_perf.single_disk.file_system_block.nfs_block' Finshed 2019-03-20 10:50:14 2019-03-20 10:50:16 ERROR 2.148
+'15-Host_RHEL.m7.u7.raw.virtio_scsi.up.virtio_net.Guest.RHEL.7.7.ppc64le.io-github-autotest-qemu.fio_perf.single_disk.file_system_block.localfs' Finshed 2019-03-20 10:50:16 2019-03-20 10:50:19 ERROR 2.335295
+'16-Host_RHEL.m7.u7.raw.virtio_scsi.up.virtio_net.Guest.RHEL.7.7.ppc64le.io-github-autotest-qemu.fio_perf.single_disk.file_system_block.nfs_block' Finshed 2019-03-20 10:50:19 2019-03-20 10:50:21 ERROR 2.175637
+Summary: 
+Finshed=16, ERROR=8, PASS=8
