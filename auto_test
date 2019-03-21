@@ -89,3 +89,13 @@ subprocess.CalledProcessError: Command '['cp', '-RTn', '/home/zhenyzha/kar/works
 '16-Host_RHEL.m7.u7.raw.virtio_scsi.up.virtio_net.Guest.RHEL.7.7.ppc64le.io-github-autotest-qemu.fio_perf.single_disk.file_system_block.nfs_block' Finshed 2019-03-20 10:50:19 2019-03-20 10:50:21 ERROR 2.175637
 Summary: 
 Finshed=16, ERROR=8, PASS=8
+(workspace) [root@ibm-p8-garrison-02 kar]# ./import2nfs.py -d zhenyzha/block
+pinging built-in NFSs, please be patient
+directory: /tmp/LOG exists, mkdir skiped.
+/tmp/LOG: nfs mount point detected
+/tmp/LOG: umounted
+successfully mounted core-shares.eng.bos.redhat.com:/exports/rt-354546 to /tmp/LOG
+copying /home/zhenyzha/kar/workspace/job-results/latest to /tmp/LOG/zhenyzha/block , this may take a while.
+logs available at: http://kvmqe-tools.qe.lab.eng.nay.redhat.com/logjump.html?target=bos&path=zhenyzha/block
+
+import done!
