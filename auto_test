@@ -105,3 +105,7 @@ copying /home/zhenyzha/kar/workspace/job-results/latest to /tmp/LOG/zhenyzha/blo
 logs available at: http://kvmqe-tools.qe.lab.eng.nay.redhat.com/logjump.html?target=bos&path=zhenyzha/block
 
 import done!
+
+部署执行环境：
+]# ./Bootstrap.sh --upstream --develop --verbose
+直接执行
