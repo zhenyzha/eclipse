@@ -78,7 +78,13 @@ Traceback (most recent call last):
 subprocess.CalledProcessError: Command '['cp', '-RTn', '/home/zhenyzha/kar/workspace/job-results/job-2019-03-19T22.39-93fe1cf', '/tmp/LOG/zhenyzha/test']' returned non-zero exit status 1
 
 
+(workspace) [root@ibm-p8-garrison-02 kar]# nohup python ConfigTest.py --testcase=fio_perf --guestname=RHEL.7.7 --imageformat=qcow2,raw \
+> --nicmodel=virtio_net --driveformat=virtio_scsi,virtio_blk --image_backend=filesystem,nfs \
+> --platform=ppc64le \
+> 
+nohup: ignoring input and appending output to ‘nohup.out’
 
+(workspace) [root@ibm-p8-garrison-02 kar]#
 '09-Host_RHEL.m7.u7.qcow2.virtio_blk.up.virtio_net.Guest.RHEL.7.7.ppc64le.io-github-autotest-qemu.fio_perf.single_disk.file_system_block.localfs' Finshed 2019-03-20 10:50:03 2019-03-20 10:50:05 ERROR 2.433422
 '10-Host_RHEL.m7.u7.qcow2.virtio_blk.up.virtio_net.Guest.RHEL.7.7.ppc64le.io-github-autotest-qemu.fio_perf.single_disk.file_system_block.nfs_block' Finshed 2019-03-20 10:50:05 2019-03-20 10:50:07 ERROR 2.221682
 '11-Host_RHEL.m7.u7.qcow2.virtio_scsi.up.virtio_net.Guest.RHEL.7.7.ppc64le.io-github-autotest-qemu.fio_perf.single_disk.file_system_block.localfs' Finshed 2019-03-20 10:50:07 2019-03-20 10:50:10 ERROR 2.3363
