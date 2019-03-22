@@ -6,5 +6,12 @@ Kickstart Metadata: ignoredisk=--drives=disk/by-id/nvme-HUSPR3216AHP301_STM0001B
 ibm-p8-garrison-04.rhts.eng.bos.redhat.com 
 Kickstart Metadata: ignoredisk=--drives=disk/by-id/nvme-HUSPR3216AHP301_STM0001B67D7
 
+其他机器
+ibm-p8-garrison-02.rhts.eng.bos.redhat.com 
+sdb  ata-ST1000NX0313_tbd_tbd_IBM_S4701ZAM
+
+
+
+
 在P8上加载vfio
 modprobe vfio-pci disable_idle_d3=1
