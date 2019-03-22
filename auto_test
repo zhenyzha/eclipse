@@ -6,7 +6,7 @@
 + --dryrun \
 
 执行测试：
-nohup python ConfigTest.py --testcase=fio_perf --guestname=RHEL.7.7 --imageformat=qcow2,raw \
+nohup python ConfigTest.py --testcase=fio_perf --guestname=RHEL.8.0 --imageformat=qcow2,raw \
 --nicmodel=virtio_net --driveformat=virtio_scsi,virtio_blk --image_backend=filesystem,nfs \
 --platform=ppc64le \
 
