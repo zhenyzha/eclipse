@@ -2,11 +2,14 @@
 ]# ./Bootstrap.sh --upstream --venv --develop --verbose
 ]# source /home/zhenyzha/kar/workspace/bin/activate
 
+]# ./Bootstrap.sh --upstream --develop --verbose
+
+
 查询将会执行的测试：
 + --dryrun \
 
 执行测试：
-nohup python ConfigTest.py --testcase=fio_perf --guestname=RHEL.8.0 --imageformat=qcow2,raw \
+nohup python3 ConfigTest.py --testcase=fio_perf --guestname=RHEL.8.0 --imageformat=qcow2,raw \
 --nicmodel=virtio_net --driveformat=virtio_scsi,virtio_blk --image_backend=filesystem,nfs \
 --platform=ppc64le \
 
