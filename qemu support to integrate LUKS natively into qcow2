@@ -1,0 +1,123 @@
+1. Create image with luks-inside-qcow2 and boot the image
+1.1 Create image
+# qemu-img create --object secret,id=sec0,data=backing -f qcow2 \
+-o encrypt.format=luks,encrypt.key-secret=sec0 base.qcow2 20G \
+
+1.2 Install OS on the image
+/usr/libexec/qemu-kvm \
+-name zhenyzha-RHEL-7.7 \
+-sandbox off \
+-machine pseries \
+-m 16G \
+-nodefaults \
+-vga std \
+-device nec-usb-xhci,id=xhci \
+-device usb-tablet,id=usb-tablet0 \
+-device usb-kbd,id=usb-kbd0 \
+-smp 16,cores=4,threads=2,sockets=2 \
+-vnc :30 \
+-monitor stdio \
+-rtc base=utc,clock=host \
+-boot order=cdn,menu=off,strict=off \
+-enable-kvm \
+--object secret,id=sec0,data=backing \
+-qmp unix:/var/tmp/qmp-monitor-zhenyzha,server,nowait \
+-qmp tcp:0:3001,server,nowait \
+-device virtio-scsi-pci,bus=pci.0,addr=0x06,id=scsi-pci-0 \
+-device virtio-scsi-pci,id=virtio_scsi_pci0,bus=pci.0,addr=0x3 \
+-netdev tap,id=hostnet0,vhost=on,script=/etc/qemu-ifup \
+-device virtio-net-pci,netdev=hostnet0,id=virtio-net-pci0,mac=40:f2:e9:5d:9c:07 \
+-drive id=drive_image1,if=none,snapshot=off,aio=threads,cache=none,format=qcow2,file=base.qcow2,encrypt.key-secret=sec0 \
+-device scsi-hd,id=image1,drive=drive_image1 \
+
+1.3 Get information of the image
+# qemu-img info base.qcow2
+
+1.4 Check the image
+# qemu-img check --object secret,id=sec0,data=backing \
+--image-opts driver=qcow2,encrypt.key-secret=sec0,file.filename=base.qcow2
+
+2. Create snapshot with luks-inside-qcow2 and boot snapshot
+2.1 Create snapshot using a different password, and create a file in the guest
+# qemu-img create --object secret,id=sec0,data=backing \
+--object secret,id=sec1,data=snapshot -f qcow2 -o encrypt.format=luks,encrypt.key-secret=sec1 \
+-b 'json:{"encrypt.key-secret": "sec0", "driver": "qcow2", "file": {"driver": "file", "filename": "base.qcow2"}}'sn.qcow2
+
+2.2 Boot the snapshot 
+/usr/libexec/qemu-kvm \
+-name zhenyzha-RHEL-7.7 \
+-sandbox off \
+-machine pseries \
+-m 16G \
+-nodefaults \
+-vga std \
+-device nec-usb-xhci,id=xhci \
+-device usb-tablet,id=usb-tablet0 \
+-device usb-kbd,id=usb-kbd0 \
+-smp 16,cores=4,threads=2,sockets=2 \
+-vnc :30 \
+-monitor stdio \
+-rtc base=utc,clock=host \
+-boot order=cdn,menu=off,strict=off \
+-enable-kvm \
+--object secret,id=sec0,data=backing \
+--object secret,id=sec1,data=snapshot \
+-qmp unix:/var/tmp/qmp-monitor-zhenyzha,server,nowait \
+-qmp tcp:0:3001,server,nowait \
+-device virtio-scsi-pci,bus=pci.0,addr=0x06,id=scsi-pci-0 \
+-device virtio-scsi-pci,id=virtio_scsi_pci0,bus=pci.0,addr=0x3 \
+-netdev tap,id=hostnet0,vhost=on,script=/etc/qemu-ifup \
+-device virtio-net-pci,netdev=hostnet0,id=virtio-net-pci0,mac=40:f2:e9:5d:9c:07 \
+-drive id=drive_image1,if=none,snapshot=off,aio=threads,cache=none,format=qcow2,file=sn.qcow2,encrypt.key-secret=sec1,backing.encrypt.key-secret=sec0 \
+-device scsi-hd,id=image1,drive=drive_image1 \
+
+2.3 Get information of the snapshot
+# qemu-img info sn.qcow2
+
+2.4 Check the snapshot
+# qemu-img check --object secret,id=sec0,data=backing \
+--object secret,id=sec1,data=snapshot \
+--image-opts driver=qcow2,encrypt.key-secret=sec1,file.filename=sn.qcow2,backing.encrypt.key-secret=sec0
+
+3. Commit the changes with luks-inside-qcow2.
+3.1 Commit the changes
+# qemu-img commit --object secret,id=sec0,data=backing \
+--object secret,id=sec1,data=snapshot \
+--image-opts driver=qcow2,encrypt.key-secret=sec1,file.filename=sn.qcow2,backing.encrypt.key-secret=sec0
+
+3.2 Get information of the backing file and snapshot
+# qemu-img info base.qcow2
+# qemu-img info sn.qcow2
+
+3.3 Check the backing file and snapshot
+# qemu-img check --object secret,id=sec0,data=backing \
+--image-opts driver=qcow2,encrypt.key-secret=sec0,file.filename=base.qcow2
+# qemu-img check --object secret,id=sec0,data=backing \
+--object secret,id=sec1,data=snapshot \
+--image-opts driver=qcow2,encrypt.key-secret=sec1,file.filename=sn.qcow2,backing.encrypt.key-secret=sec0
+
+4. Convert the snapshot to a qcow2 image with luks-inside-qcow2
+4.1 Convert snapshot to a qcow2 image using a different password
+# qemu-img convert -p \
+--object secret,id=sec0,data=backing \
+--object secret,id=sec1,data=snapshot \
+--object secret,id=sec2,data=convert \
+--image-opts driver=qcow2,encrypt.key-secret=sec1,file.filename=sn.qcow2,backing.encrypt.key-secret=sec0 \
+-O qcow2 -o encrypt.format=luks,encrypt.key-secret=sec2 convert.qcow2
+
+4.2 Get information of the new image
+# qemu-img info convert.qcow2
+
+4.3 Check the new image
+# qemu-img check --object secret,id=sec2,data=convert \
+--image-opts driver=qcow2,encrypt.key-secret=sec2,file.filename=convert.qcow2
+
+5. Compare the images 比较
+# qemu-img compare -p --object secret,id=sec0,data=backing \
+--object secret,id=sec1,data=snapshot --object secret,id=sec2,data=convert \
+--image-opts driver=qcow2,encrypt.key-secret=sec1,file.filename=sn.qcow2,backing.encrypt.key-secret=sec0 \
+driver=qcow2,encrypt.key-secret=sec2,file.filename=convert.qcow2
+
+
+
+
