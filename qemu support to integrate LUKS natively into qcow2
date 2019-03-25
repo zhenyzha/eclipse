@@ -112,7 +112,7 @@
 # qemu-img check --object secret,id=sec2,data=convert \
 --image-opts driver=qcow2,encrypt.key-secret=sec2,file.filename=convert.qcow2
 
-5. Compare the images 比较
+5. Compare the images 检查两个图像是否具有相同的内容。 您可以比较不同格式或设置的图像。Images are identical.
 # qemu-img compare -p --object secret,id=sec0,data=backing \
 --object secret,id=sec1,data=snapshot --object secret,id=sec2,data=convert \
 --image-opts driver=qcow2,encrypt.key-secret=sec1,file.filename=sn.qcow2,backing.encrypt.key-secret=sec0 \
