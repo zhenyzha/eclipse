@@ -221,3 +221,39 @@ Scenorio 1: Convert qcow2 image to qcow2 image
 --image-opts driver=qcow2,encrypt.key-secret=sec0,file.filename=base.qcow2 \
 -O qcow2 -S 0 -o encrypt.format=luks,encrypt.key-secret=sec4 measure_full.qcow2
 # ls -als measure_full.qcow2
+
+# qemu-img measure --object secret,id=sec0,data=backing \
+> --image-opts driver=qcow2,encrypt.key-secret=sec0,file.filename=base.qcow2 -O qcow2
+required size: 4103667712
+fully allocated size: 21478375424
+# qemu-img convert -p --object secret,id=sec0,data=backing \
+> --object secret,id=sec4,data=measure \
+> --image-opts driver=qcow2,encrypt.key-secret=sec0,file.filename=base.qcow2 \
+> -O qcow2 -o encrypt.format=luks,encrypt.key-secret=sec4 measure.qcow2
+    (100.00/100%)
+# ls -als measure.qcow2
+4188188 -rw-r--r--. 1 root root 2383282176 3月  26 08:23 measure.qcow2
+# du measure.qcow2 
+4188188	measure.qcow2
+# qemu-img convert -p --object secret,id=sec0,data=backing \
+> --object secret,id=sec4,data=measure \
+> --image-opts driver=qcow2,encrypt.key-secret=sec0,file.filename=base.qcow2 \
+> -O qcow2 -S 0 -o encrypt.format=luks,encrypt.key-secret=sec4 measure_full.qcow2
+    (100.00/100%)
+# ls -als measure_full.qcow2
+28313108 -rw-r--r--. 1 root root 21480472576 3月  26 08:33 measure_full.qcow2
+
+Scenorio 2: Convert qcow2 image to raw image
+10.1 Calculate the file size for converting qcow2 image to raw image
+# qemu-img measure --object secret,id=sec0,data=backing \
+--image-opts driver=qcow2,encrypt.key-secret=sec0,file.filename=base.qcow2 -O raw
+
+10.2 Convert image to raw image and get the size of new created image
+# qemu-img convert -p --object secret,id=sec0,data=backing \
+--image-opts driver=qcow2,encrypt.key-secret=sec0,file.filename=base.qcow2 -O raw measure.img
+# ls -als measure.img
+
+10.3 Convert image to raw image which is fully allocated and get the size of newly created image
+# qemu-img convert -p --object secret,id=sec0,data=backing \
+--image-opts driver=qcow2,encrypt.key-secret=sec0,file.filename=base.qcow2 -O raw -S 0 measure_full.img
+# ls -als measure_full.img
