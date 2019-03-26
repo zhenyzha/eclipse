@@ -30,6 +30,14 @@
 -drive id=drive_image1,if=none,snapshot=off,aio=threads,cache=none,format=qcow2,file=base.qcow2,encrypt.key-secret=sec0 \
 -device scsi-hd,id=image1,drive=drive_image1 \
 
+
+[root@localhost html]# dd if=/dev/zero of=file bs=1M count=800
+dd if=/dev/zero of=test bs=1M count=100，
+
+md5sum test2 > test2.txt     md5生成
+md5sum -c test2.txt              md5值校验
+
+
 1.3 Get information of the image
 # qemu-img info base.qcow2
 
