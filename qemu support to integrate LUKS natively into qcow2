@@ -49,7 +49,7 @@ md5sum -c test2.txt              md5值校验
 2.1 Create snapshot using a different password, and create a file in the guest
 # qemu-img create --object secret,id=sec0,data=backing \
 --object secret,id=sec1,data=snapshot -f qcow2 -o encrypt.format=luks,encrypt.key-secret=sec1 \
--b 'json:{"encrypt.key-secret": "sec0", "driver": "qcow2", "file": {"driver": "file", "filename": "base.qcow2"}}'sn.qcow2
+-b 'json:{"encrypt.key-secret": "sec0", "driver": "qcow2", "file": {"driver": "file", "filename": "base.qcow2"}}' sn.qcow2
 
 2.2 Boot the snapshot 
 /usr/libexec/qemu-kvm \
