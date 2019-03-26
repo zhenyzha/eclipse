@@ -4,7 +4,7 @@
 -o encrypt.format=luks,encrypt.key-secret=sec0 base.qcow2 20G \
 
 1.2 Install OS on the image
-/usr/libexec/qemu-kvm \
+# /usr/libexec/qemu-kvm \
 -name zhenyzha-RHEL-7.7 \
 -sandbox off \
 -machine pseries \
@@ -34,8 +34,8 @@
 [root@localhost html]# dd if=/dev/zero of=file bs=1M count=800
 dd if=/dev/zero of=test bs=1M count=100，
 
-md5sum test2 > test2.txt     md5生成
-md5sum -c test2.txt              md5值校验
+# md5sum test2 > test2.txt     md5生成
+# md5sum -c test2.txt              md5值校验
 
 
 1.3 Get information of the image
@@ -52,7 +52,7 @@ md5sum -c test2.txt              md5值校验
 -b 'json:{"encrypt.key-secret": "sec0", "driver": "qcow2", "file": {"driver": "file", "filename": "base.qcow2"}}' sn.qcow2
 
 2.2 Boot the snapshot 
-/usr/libexec/qemu-kvm \
+# /usr/libexec/qemu-kvm \
 -name zhenyzha-RHEL-7.7 \
 -sandbox off \
 -machine pseries \
@@ -127,5 +127,97 @@ md5sum -c test2.txt              md5值校验
 driver=qcow2,encrypt.key-secret=sec2,file.filename=convert.qcow2
 
 
+qcow2 version 2 (compat=0.10)
+qcow2 version 3 (comapt=1.1)
 
+6.2 Downgrade the version of qcow2 image.
+# qemu-img amend -p --object secret,id=sec2,data=convert --image-opts \
+driver=qcow2,encrypt.key-secret=sec2,file.filename=convert.qcow2 -o compat=0.10
 
+6.3 Get information of the image
+# qemu-img info convert.qcow2
+
+6.4 Check the image
+# qemu-img check --object secret,id=sec2,data=convert \
+--image-opts driver=qcow2,encrypt.key-secret=sec2,file.filename=convert.qcow2
+
+7. Rebase image
+7.1 Rebase snapshot to the new image
+# qemu-img rebase -p --object secret,id=sec0,data=backing --object secret,id=sec1,data=snapshot \
+--object secret,id=sec2,data=convert \
+--image-opts driver=qcow2,encrypt.key-secret=sec1,file.filename=sn.qcow2,backing.encrypt.key-secret=sec0 \
+-b 'json:{"encrypt.key-secret": "sec2", "driver": "qcow2", "file": {"driver": "file","filename": "convert.qcow2"}}'
+
+7.2 Get information of the snapshot
+# qemu-img info sn.qcow2
+
+7.3 Check the snapshot 
+# qemu-img check --object secret,id=sec1,data=snapshot --object secret,id=sec2,data=convert \
+--image-opts driver=qcow2,encrypt.key-secret=sec1,file.filename=sn.qcow2,backing.encrypt.key-secret=sec2
+
+8. Resize image
+8.1 Enlarge image size of the snapshot.
+# qemu-img resize --object secret,id=sec1,data=snapshot --object secret,id=sec2,data=convert \
+--image-opts driver=qcow2,encrypt.key-secret=sec1,backing.encrypt.key-secret=sec2,file.filename=sn.qcow2 +1G
+
+8.2 Get information of the snapshot
+# qemu-img info sn.qcow2
+
+8.3 Check the snapshot
+# qemu-img check --object secret,id=sec1,data=snapshot \
+--object secret,id=sec2,data=convert \
+--image-opts driver=qcow2,encrypt.key-secret=sec1,backing.encrypt.key-secret=sec2,file.filename=sn.qcow2
+
+9. Dump the metadata of the image
+9.1 Use human format to dump
+# qemu-img map --object secret,id=sec0,data=backing \
+--image-opts driver=qcow2,encrypt.key-secret=sec0,file.filename=base.qcow2
+Offset          Length          Mapped to       File
+qemu-img: File contains external, encrypted or compressed clusters.
+
+9.2 Use json format to dump
+# qemu-img map --object secret,id=sec0,data=backing \
+--image-opts driver=qcow2,encrypt.key-secret=sec0,file.filename=base.qcow2 --output=json
+[{ "start": 0, "length": 65536, "depth": 0, "zero": false, "data": true},
+{ "start": 65536, "length": 983040, "depth": 0, "zero": true, "data": false},
+{ "start": 1048576, "length": 154796032, "depth": 0, "zero": false, "data": true},
+{ "start": 155844608, "length": 117833728, "depth": 0, "zero": true, "data": false},
+{ "start": 273678336, "length": 3342336, "depth": 0, "zero": false, "data": true},
+{ "start": 277020672, "length": 265093120, "depth": 0, "zero": true, "data": false},
+{ "start": 542113792, "length": 13172736, "depth": 0, "zero": false, "data": true},
+{ "start": 555286528, "length": 255262720, "depth": 0, "zero": true, "data": false},
+{ "start": 810549248, "length": 196608, "depth": 0, "zero": false, "data": true},
+{ "start": 810745856, "length": 268107776, "depth": 0, "zero": true, "data": false},
+{ "start": 1078853632, "length": 1245184, "depth": 0, "zero": false, "data": true},
+{ "start": 1080098816, "length": 2147418112, "depth": 0, "zero": true, "data": false},
+{ "start": 3227516928, "length": 2265251840, "depth": 0, "zero": false, "data": true},
+{ "start": 5492768768, "length": 2296053760, "depth": 0, "zero": true, "data": false},
+{ "start": 7788822528, "length": 652607488, "depth": 0, "zero": false, "data": true},
+{ "start": 8441430016, "length": 3908698112, "depth": 0, "zero": true, "data": false},
+{ "start": 12350128128, "length": 566427648, "depth": 0, "zero": false, "data": true},
+{ "start": 12916555776, "length": 3994877952, "depth": 0, "zero": true, "data": false},
+{ "start": 16911433728, "length": 442826752, "depth": 0, "zero": false, "data": true},
+{ "start": 17354260480, "length": 4118347776, "depth": 0, "zero": true, "data": false},
+{ "start": 21472608256, "length": 131072, "depth": 0, "zero": false, "data": true},
+{ "start": 21472739328, "length": 2031616, "depth": 0, "zero": true, "data": false},
+{ "start": 21474770944, "length": 65536, "depth": 0, "zero": false, "data": true}]
+
+10. Calculate file size
+Scenorio 1: Convert qcow2 image to qcow2 image
+10.1 Calculate the file size for converting qcow2 image to qcow2 image
+# qemu-img measure --object secret,id=sec0,data=backing \
+--image-opts driver=qcow2,encrypt.key-secret=sec0,file.filename=base.qcow2 -O qcow2
+
+10.2 Convert image to qcow2 image and get the size of new created image
+# qemu-img convert -p --object secret,id=sec0,data=backing \
+--object secret,id=sec4,data=measure \
+--image-opts driver=qcow2,encrypt.key-secret=sec0,file.filename=base.qcow2 \
+-O qcow2 -o encrypt.format=luks,encrypt.key-secret=sec4 measure.qcow2
+# ls -als measure.qcow2
+
+10.3 Convert image to qcow2 image which is fully allocated and get the size of newly created image
+# qemu-img convert -p --object secret,id=sec0,data=backing \
+--object secret,id=sec4,data=measure \
+--image-opts driver=qcow2,encrypt.key-secret=sec0,file.filename=base.qcow2 \
+-O qcow2 -S 0 -o encrypt.format=luks,encrypt.key-secret=sec4 measure_full.qcow2
+# ls -als measure_full.qcow2
