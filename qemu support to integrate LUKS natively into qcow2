@@ -259,17 +259,3 @@ Scenorio 2: Convert qcow2 image to raw image
 # ls -als measure_full.img
 
 
-
-[root@ibm-p8-garrison-02 zhenyzha]# qemu-img measure --image-opts driver=qcow2,file.filename=qcow3-vol -O qcow2
-required size: 3538944
-fully allocated size: 21478375424
-[root@ibm-p8-garrison-02 zhenyzha]# qemu-img convert -p --image-opts driver=qcow2,file.filename=qcow3-vol \
-> -O qcow2 qcow3.qcow2
-    (100.00/100%)
-[root@ibm-p8-garrison-02 zhenyzha]# ls -als qcow3.qcow2
-196 -rw-r--r--. 1 root root 196928 3月  26 09:01 qcow3.qcow2
-[root@ibm-p8-garrison-02 zhenyzha]# qemu-img convert -p --image-opts driver=qcow2,file.filename=qcow3-vol \
-> -O qcow2 -S 0 qcow3_full.qcow2
-    (100.00/100%)
-[root@ibm-p8-garrison-02 zhenyzha]# ls -als qcow3_full.qcow2
-20974916 -rw-r--r--. 1 root root 21478375424 3月  26 09:03 qcow3_full.qcow2
