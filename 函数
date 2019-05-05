@@ -1,0 +1,56 @@
+#函数范例：
+def zzy(a, b):
+    print(f"you have {a}")
+    print(f"you have {b}")
+    print("get a blanket.\n")
+
+print("show:1")
+zzy(20, 30)
+
+print("show:2")
+a = 10
+b = 20
+
+zzy(a, b)
+
+print("show:3")
+zzy(10 + 20, 5 + 6)
+
+print("show:4")
+zzy(a + 100, b + 1000)
+
+#函数范例2：
+#使用函数读取文件
+from sys import argv
+
+script, input_file = argv
+
+def zzy1(f):         #将文件标记为只读
+    print(f.read())
+
+def zzy2(f):         #将读写跳到开头
+    f.seek(0)
+
+def zzy3(a, f):      #设定读取文件当前行！！！
+    print(a, f.readline())
+
+BL1 = open(input_file)  #定义变量1，把input_file标记为文件
+
+print("First let's print the whole file:\n")
+
+zzy1(BL1)
+
+print("Now let's rewind, kind of like a tape.")
+
+zzy2(BL1)
+
+print("Let's print three lines:")
+
+BL2 = 1             #变量BL2可以一直改变
+zzy3(BL2, BL1)
+
+BL2 = BL2 + 1
+zzy3(BL2, BL1)
+
+BL2 = BL2 + 1
+zzy3(BL2, BL1)
