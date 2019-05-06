@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 #函数范例1：
+#使用函数
 def zzy(a, b):
     print(f"you have {a}")
     print(f"you have {b}")
