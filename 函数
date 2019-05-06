@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-#函数范例：
+#函数范例1：
 def zzy(a, b):
     print(f"you have {a}")
     print(f"you have {b}")
@@ -20,6 +20,7 @@ zzy(10 + 20, 5 + 6)
 print("show:4")
 zzy(a + 100, b + 1000)
 
+--------------------------------------------------------------------------------------------------------------
 #函数范例2：
 #使用函数读取文件
 from sys import argv
@@ -55,3 +56,55 @@ zzy3(BL2, BL1)
 
 BL2 = BL2 + 1
 zzy3(BL2, BL1)
+
+--------------------------------------------------------------------------------------------------------------
+#函数范例3：
+#函数main中调用main，循环用if终止
+import sys
+script, encoding, error = sys.argv  #定义系统参数脚本，编码，错误
+
+
+def main(language_file, encoding, errors):     #函数main3个参数
+    line = language_file.readline()             #变量line 读当前行
+
+    if line:                                    #检验变量line的真值，有内容即为真，否则跳过
+        print_line(line, encoding, errors)       #调用函数print_line打印
+        return main(language_file, encoding, errors) #循环执行main 直到这一行没有内容了
+
+
+def print_line(line, encoding, errors):                      #函数print_line3个参数读当前行，编码，错误
+    next_lang = line.strip()                                   #把每行结尾的\n删掉，字符串1
+    raw_bytes = next_lang.encode(encoding, errors = errors)    # 使用.encode来编码字符串，变成原始字符串
+    cooked_string = raw_bytes.decode(encoding, errors = errors)  #使用.decode将原始字符串变成，字符串1
+
+    print(raw_bytes, "<===>", cooked_string)                   #原始字符串，根据原始字符串转换的 字符串1
+
+
+languages = open("languages.txt", encoding = "utf-8")    #定义变量 打开languages.txt,指定编码格式为utf-8
+
+main(languages, encoding, error)
+
+--------------------------------------------------------------------------------------------------------------
+#函数范例4：
+#定义新变量存放函数返回值
+def HS1(started):                                        #这个函数有一个参数
+    a = started * 500                                    #之后对这一个参数做改变
+    b = a / 1000
+    c = b / 100
+    return a, b, c                                       #函数返回值
+
+HS1_BL = 10000                                           #函数中的参数
+beans, b, c = HS1(HS1_BL)                                #定义新变量存放函数返回值
+
+# remember that this is another way to format a string
+print("With a starting point of: {}".format(HS1_BL))     #调用变量
+print(f"With a starting point of: {HS1_BL}")
+# it's just like with an f"" string
+print(f"We'd have {beans} beans, {b} b, and {c} c.")
+
+HS1_BL = HS1_BL / 10                                     #定义变量
+
+print("We can also do that this way:")
+formula = HS1(HS1_BL)                                    #定义变量formula =函数
+# this is an easy way to apply a list to a format string      
+print("We'd have {} beans, {} b, and {} c.".format(*formula)) #通用格式化formula
