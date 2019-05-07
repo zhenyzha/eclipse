@@ -1,1 +1,17 @@
+#!/usr/bin/python3
+# 条件范例1：
+people = 30
+cars = 40
 
+
+if cars > people:
+    print ("We should take the cars.")
+elif cars < people:
+    print("We should not take the cars.")
+else:
+    print("We can't decide.")
+
+if people > trucks:
+    print("Alright, let't just take trucks.")
+else:
+    print("Fine, let's stay home then.")
