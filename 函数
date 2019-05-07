@@ -111,7 +111,7 @@ print("We'd have {} beans, {} b, and {} c.".format(*formula)) #通用格式化fo
 #函数范例5：
 #split() 分割符用法
 def break_words(stuff):
-    """this function will break up words for us."""      #这行作用不明白
+    """this function will break up words for us."""      #在python解释器中用的
     words1 = stuff.split(' ')
     words2 = stuff.split(' ', 2 )                        # 以空格为分隔符，分隔次数为2
     return words1, words2
