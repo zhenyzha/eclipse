@@ -1,26 +1,26 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
-
 ten_things = "apples oranges crows telephone light sugar"
 
 print("wait there are not 10 things in that list. Let's fix that.")
 
-stuff = ten_things.split(' ')
+stuff = ten_things.split(' ')                          #对ten_things 进行切片,定义stuff为一个列表
+print(stuff)
 more_stuff = ["day", "night", "song", "frisbee",
-               "corn", "banana", "girl", "boy"]
+               "corn", "banana", "girl", "boy"]        #创建列表more_stuff
 
-while len(stuff) != 10:
-    next_one = more_stuff.pop()
-    print("Adding: ", next_one)
-    stuff.append(next_one)
-    print(f"ther are {len(stuff)} items now.")
+while len(stuff) != 10:                                #不等于10时循环，等于10时停止循环
+    next_one = more_stuff.pop()                        #删除more_stuff最后一个值
+    print("Adding: ", next_one)                        #打印删除的值
+    stuff.append(next_one)                             #给stuff追加值 追加的为上面删除值
+    print(f"ther are {len(stuff)} items now.")         #stuff 中有几个值
 
 print("there we go: ", stuff)
 
 print("let's do some things with stuff.")
 
-print(stuff[1])
-print(stuff[-1])  #whoa! fancy
-print(stuff.pop())
-print(' '.join(stuff)) #what? cool!
-print('#'.join(stuff[3:5])) #super stellar!
+print(stuff[1])                                        #打印第二个值
+print(stuff[-1])                                       #打印最后一个值
+print(stuff.pop())                                     #删除一个值默认最后一个
+print(' '.join(stuff))                                 #将空格插入列表
+print('#'.join(stuff[3:5]))                            #将#添加到4 5中间
