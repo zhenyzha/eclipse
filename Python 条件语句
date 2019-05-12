@@ -90,3 +90,74 @@ for i in range(0, 6):
 for i in elements:
     print(f"Element was: {i}")
     
+------------------------------------------------------------------------------------------------------------------
+# 条件范例4：
+# 2次条件
+from sys import exit
+
+def gold_room():                            # 选择函数，定义整数进行判断
+    print("how much do you take?")
+
+    choice = input("> ")
+    how_much = int(choice)
+  
+    if how_much < 50:
+        print("Nice, you win")
+        exit(0)
+    else:
+        dead("you greedy bastard!")
+
+def bear_room():                              #重点！！！
+    print("""                                 #bear_room()二次选择函数，循环函数
+    there is a bear here.
+    how are you going to move the bear?""")
+    bear_moved = False                       #设定bear_moved 为假值
+
+    while True:                              #循环条件为真，则一直进行
+        choice = input("> ")                 #条件变量 收集
+
+        if choice == "take honey":                       #条件变量 a 则调用函数 dead()
+            dead("slaps your face off.")                      
+        elif choice == "taunt bear" and not bear_moved:  #条件变量 b 且 非“假”时，bear_moved 变为真值
+            print("the bear has moved from the door")    #继续下一个判断
+            bear_moved = True                            
+        elif choice == "taunt bear" and bear_moved:      #条件变量 b 且 bear_moved 为真时 调用dead()
+            dead("the bear gets pissed off and chews your leg off.")
+        elif choice == "open door" and bear_moved:       #条件变量 c 且 bear_moved 为真时 调用gold_room（）
+            gold_room()
+        else:
+            print("I got no idea what that means.")      #否则打印 我不明白你意思
+
+
+def cthulhu_room():                          #cthulhu_room()打印 选择函数start() dead(）否则cthulhu_room()
+    print("""
+    do you flee for your life or eat your head?""")
+
+    choice = input("> ")
+
+    if "flee" in choice:
+        start()
+    elif "head" in choice:
+        dead("well that was tasty")
+    else:
+        cthulhu_room()
+
+def dead(why):                                  #dead（）打印并退出
+    print(why, "good job")
+    exit(0)
+
+def start():                                     #start（）选择函数bear_room()； cthulhu_room() 否则dead（）
+    print("""
+    you are in a dark room.
+    which one do you take?""")
+
+    choice = input("> ")
+
+    if choice == "left":
+        bear_room()
+    elif choice == "right":
+        cthulhu_room()
+    else:
+        dead("you stumble around the room until you starve.")    
+
+start()                                    #从start函数开始运行
