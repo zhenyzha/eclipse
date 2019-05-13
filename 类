@@ -1,0 +1,23 @@
+#!/usr/bin/python3
+#-*-coding:utf-8-*-
+class Song(object):                    #定义类 Song
+
+    def __init__(self, lyrics):        #类初始化的方法，lyrice不懂？？？
+        self.lyrics = lyrics           #lyrice 貌似是变量  ？？？
+
+    def sing_me_a_song(self):          #定义函数 从序列中遍历项目，打印
+        for line in self.lyrics:
+            print(line)
+                                        #类的实例化，创建对象1
+happy_bday = Song(["""                    
+Happy birthday to you
+I don't want to get sued
+So I'll stop right there""", "test", "3"])
+                                        #类的实例化，创建对象2
+bulls_on_parade = Song(["""
+They rally around the family
+With pockets full of shells"""])
+
+happy_bday.sing_me_a_song()             #对象1调用类里的函数.sing_me_a_song()
+
+bulls_on_parade.sing_me_a_song()        #对象2调用类里的函数.sing_me_a_song()
