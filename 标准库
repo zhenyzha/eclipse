@@ -1,0 +1,33 @@
+
+#-*-coding:utf-8-*-
+import json                           #调用了存储模块
+
+def get_stored_username():
+    """如果存储了用户用户名，就获取它"""
+    filename = 'username.json'
+    try:                                   #打开文件不存在时的异常处理
+        with open(filename) as f_obj:
+            username = json.load(f_obj)
+    except FileNotFoundError:              #通过不同的返回值，在下面的逻辑作判断
+        return None
+    else:
+        return username
+
+def get_new_username():                      #一个不存在时，获取用户名的函数
+    """提示用户输入用户名"""
+    username = input("what is your name? ")
+    filename = 'username.json'
+    with open(filename, 'w') as f_obj:        #打开文件可写
+        json.dump(username, f_obj)            #通过json.dump将username写入文件
+    return username
+
+def greet_user():
+    """问候用户，并指出名字"""
+    username = get_stored_username()                #调用get_stored_username()函数结果
+    if username:
+        print("welcome back, " + username + "!")
+    else:
+        username = get_new_username()
+        print("welcome, " + username + "!")
+
+greet_user()
