@@ -1,6 +1,9 @@
+#!/usr/bin/python3
+#-*-coding:utf-8-*-
 
 import re
 
+#re.search(pattern, text) 查到第一个后结束
 pattern = 'this'
 text = 'Does this text match the pattern?'
 
@@ -11,3 +14,26 @@ e = match.end()
 
 print('Found "{}"\nin "{}"\nfrom {} to {} ("{}")'.format(
     match.re.pattern, match.string, s, e, text[s:e]))
+
+return:
+Found "this"
+in "Does this text match the pattern?"
+from 5 to 9 ("this")
+=======================================================================
+# re.compile(p)全文匹配
+regexes = [
+    re.compile(p)
+    for p in ['this', 'that']
+]
+text = 'Does this text match the pattern?'
+
+print('Text: {!r}\n'.format(text))
+
+for regex in regexes:
+    print('Seeking "{}" ->'.format(regex.pattern),
+          end=' ')                                #这个end取下面的结果，值得学习
+
+    if regex.search(text):
+        print('match!')
+    else:
+        print('no match')
