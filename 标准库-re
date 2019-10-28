@@ -38,6 +38,6 @@ for regex in regexes:
     else:
         print('no match')
 
-  =======================================================================     
+ =======================================================================     
     image_size = input('please input the lun size __G: ')
     re.search(r'(\d+(\.)?\d+)(\w+)?', image_size).group(1)
