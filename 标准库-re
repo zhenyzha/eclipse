@@ -41,7 +41,15 @@ for regex in regexes:
  =======================================================================     
     image_size = input('please input the lun size __G: ')
     re.search(r'(\d+(\.)?\d+)(\w+)?', image_size).group(1)
-
+    
+        ('NUMBER',   r'\d+(\.\d*)?'),  # Integer or decimal number
+        ('ASSIGN',   r':='),           # Assignment operator
+        ('END',      r';'),            # Statement terminator
+        ('ID',       r'[A-Za-z]+'),    # Identifiers
+        ('OP',       r'[+\-*/]'),      # Arithmetic operators
+        ('NEWLINE',  r'\n'),           # Line endings
+        ('SKIP',     r'[ \t]+'),       # Skip over spaces and tabs
+        ('MISMATCH', r'.'),            # Any other character
  =======================================================================
 from __future__ import division
 import re
