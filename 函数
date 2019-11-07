@@ -1,5 +1,22 @@
 #!/usr/bin/python3
 #函数的本质是赋值运算
+#接口函数描述规范
+def set_temperature(self, temp):
+    """Set the temperature value.
+
+    The value of the temp parameter is stored as a value in
+    the class variable temperature. The given value is converted
+    into a float value if not yet done.
+
+    :param temp: the temperature value
+    :type temp: float
+    :return: no value
+    :rtype: none
+    """
+
+    self.temperature = float(temp)
+    return
+
 #函数范例1：
 def zzy(a, b):
     print(f"you have {a}")
