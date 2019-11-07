@@ -6,7 +6,7 @@ class Song(object):                    #定义类 Song
         self.lyrics = lyrics           #lyrice 是全局变量  
 
     def sing_me_a_song(self):          #函数定义了类要暴露出的行为
-        for line in self.lyrics:
+        for line in self.lyrics:       #位于类中的函数通常称为方法
             print(line)
                                         #类的实例化，创建对象1
 happy_bday = Song(["""                    
