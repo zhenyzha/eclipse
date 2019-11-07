@@ -2,10 +2,10 @@
 #-*-coding:utf-8-*-
 class Song(object):                    #定义类 Song
 
-    def __init__(self, lyrics):        #类初始化的方法，lyrice不懂？？？
-        self.lyrics = lyrics           #lyrice 貌似是变量  ？？？
+    def __init__(self, lyrics):        #类的构造函数
+        self.lyrics = lyrics           #lyrice 是全局变量  
 
-    def sing_me_a_song(self):          #定义函数 从序列中遍历项目，打印
+    def sing_me_a_song(self):          #函数定义了类要暴露出的行为
         for line in self.lyrics:
             print(line)
                                         #类的实例化，创建对象1
