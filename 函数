@@ -2,7 +2,7 @@
 #函数的本质是赋值运算
 #接口函数描述规范
 def set_temperature(self, temp):
-    """Set the temperature value.
+    """Set the temperature value.   标题
 
     The value of the temp parameter is stored as a value in
     the class variable temperature. The given value is converted
@@ -16,6 +16,22 @@ def set_temperature(self, temp):
 
     self.temperature = float(temp)
     return
+
+def get_qdev_by_drive(self, device):
+    """
+    Get the qdev ID of device by drive name.  内容
+    
+    :param device: device name
+    :type device: str
+    :return: the qdev ID
+    :rtype: str
+    """
+    for dev in self.__devices:
+        try:
+            if isinstance(dev, qdevices.QDevice) and device == dev.params['drive']:
+                return dev.params['id']
+        except KeyError:
+            continue
 
 #函数范例1：
 def zzy(a, b):
