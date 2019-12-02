@@ -1,0 +1,16 @@
+try:
+    print('1')
+    name
+    l=[1,2,3]
+    l[100]
+    d={}
+    d['name']
+    
+except NameError as e:
+    print('----->', e)
+    
+except IndexError as e:
+    print('----->', e)    
+
+except KeyError as e:
+    print('----->', e)  
