@@ -21,3 +21,32 @@ With pockets full of shells"""])
 happy_bday.sing_me_a_song()             #对象1调用类里的函数.sing_me_a_song()
 
 bulls_on_parade.sing_me_a_song()        #对象2调用类里的函数.sing_me_a_song()
+
+
+#多态：
+#当父类有多个派生类，且派生类都实现了同一个成员函数，则可以实现多态：
+#就是说派生类都调用了父类的一个方法
+class H2O(object):
+    def what(self):
+        print("I am H2O")
+        
+class Water(H2O):
+    def what(self):
+        print("I am water")
+
+class Ice(H2O):
+    def what(self):
+        print("I am ice")
+        
+class WaterVapor(H2O):
+    def what(self):
+        print("I am water vapor")
+        
+def what(obj):  #调用对象中的what方法
+    obj.what()
+    
+objs = [H2O(), Water(), Ice(), WaterVapor()]
+
+for obj in objs:
+    what(obj)
+    
