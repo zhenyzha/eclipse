@@ -17,3 +17,8 @@ except IndexError as e:
 
 except KeyError as e:
     print('----->', e)  
+ 
+================================================================
+except Exception as e:   #万能异常
+    print('------>', e) 
+
