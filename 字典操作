@@ -1,5 +1,43 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-
+1.添加或更新字典键值对
+d = {'A': 20, 'B': 28, 'C': 21}
+d.update({'D': 11})
+d.update({'C': 5})
+d
+{'A': 20, 'B': 28, 'C': 5, 'D': 11}
+
+2.删除字典 某个键，清空该字典
+d
+{'A': 20, 'B': 28, 'C': 5, 'D': 11}
+d.pop('D')
+11
+d.clear()
+d
+{}
+
+3.判断某键是否在字典中
+d = {'A': 20, 'B': 28, 'C': 5}
+'D' in d
+False
+'C' in d
+True
+
+4.遍历字典，  打印键值对   (值可以直接用 d[key]  )
+d = {'A': 20, 'B': 28, 'C': 5}
+for key in d:
+    print(key, d[key])
+    
+A 20
+B 28
+C 5
+
+5.以列表['A','B','C','D','E','F','G','H']中的每一个元素为键，默认值都是0，创建一个字典。
+a = ['A','B','C','D','E','F','G','H'] 
+dict.fromkeys(a, 0)
+{'A': 0, 'B': 0, 'C': 0, 'D': 0, 'E': 0, 'F': 0, 'G': 0, 'H': 0}
+
+6.翻译下面的函数
 from urllib.parse import parse_qs
 my_values = parse_qs('red=5&blue=0&green=',
                      keep_blank_values=True)
