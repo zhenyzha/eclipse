@@ -188,3 +188,22 @@ def demo():
 if __name__ == '__main__':
     demo()
 
+----------------------------------------------------------------------------------------------------------
+1. 写一个函数传参打印30次，每次间隔0.1秒
+import time
+
+def slow_print(count='',n=30,delay=0.1):
+    for i in range(n):                       
+        print(count, end='', flush=True)
+        time.sleep(delay)
+        
+slow_print('h ')
+h h h h h h h h h h h h h h h h h h h h h h h h h h h h h h
+
+2.函数传参，传入一个参数列表
+def square(x):
+    return x ** 2
+map(square, [1,2,3,4,5])
+<map object at 0x7fdaa450a8d0>
+[_ for _ in map(square, [1,2,3,4,5])]
+[1, 4, 9, 16, 25]
