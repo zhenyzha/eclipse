@@ -1,0 +1,180 @@
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+
+========================元组(tuple)
+1.两个元组合并
+a = (1,2)
+b = (3,4)
+c = a + b
+c
+(1, 2, 3, 4)
+
+2.元组中元素解包，对应不同变量
+c = (1, 2, 3, 4)
+a,b,c,d = c
+>a
+>1
+>b
+>2
+
+3.统计元组中某元素个数
+c = (1, 2, 3, 4, 3, 4)
+c.count(3)
+2
+
+4.查看元组中某元素索引值 (index只会返回查到的第一个元素)
+c = (1, 2, 3, 4, 3, 4)
+c.index(3)
+2
+
+5.判断某元素是否在元组中(注意查询对象的类型，是否与元素一致)
+c = (1, 2, 3, 4, 3, 4)
+'4' in c
+False
+4 in c
+True
+
+6.取两个值中最大值或者最小值
+a,b = 3.14, 2.72
+min(a,b)
+2.72
+max(a,b)
+3.14
+
+
+
+========================集合(set)
+1.创建集合，像里面增加元素
+a = set()
+a.update({'x','y','z'})
+a
+{'x', 'y', 'z'}
+
+2.添加删除集合中的元素，最后清空集合
+a = {'x', 'y', 'z'}
+a.remove('z')
+a.add('w')
+a
+{'x', 'y', 'w'}
+a.clear()
+a
+set()
+
+3.对比a, b 两个集合，返回a 有 b 没有的元素
+a = {'x', 'y', 'z'}
+b = {'x', 'y', 'w'}
+a.difference(b)
+{'z'}
+
+4.对比a, b 两个集合，返回a 和 b 共有的元素
+a = {'x', 'y', 'z'}
+b = {'x', 'y', 'w'}
+a.intersection(b)
+{'x', 'y'}
+
+
+========================字符串(str )
+1.字符串大小写转换
+s = 'abCdEFg5'
+s.upper()
+'ABCDEFG5'
+s.lower()
+'abcdefg5'
+s.swapcase()
+'ABcDefG5'
+
+2.字符串句子首字母大写，和每个单词首字母大写
+s = 'this is python'
+s.capitalize()
+'This is python'
+s.title()
+'This Is Python'
+
+3.返回字符串某单词出现的次数
+s = 'this is python'
+s.count('is')
+2
+
+4.将字符串按空格切片，且忽略多余空格
+s = 'this is python'
+s.split()
+['this', 'is', 'python']
+
+5.将字符串按特定符号切片，且忽略多余空格
+a ='blog.csdn.net/xufive/article/details/102946961'
+a.split('/')
+['blog.csdn.net', 'xufive', 'article', 'details', '102946961']
+
+6.区分字符串中的整形和浮点型，并以',' 做切片 。 重点
+a = '2.72, 5, 7, 3.14'
+[float(s) if '.' in s else int(s) for s in a.split(',')]
+[2.72, 5, 7, 3.14]
+
+7.替换字符串中的单词
+a = 'this is python'
+a.replace('is', 'are')
+'thare are python'
+
+8.指定删除字符串左右两侧空格或换行符
+s = '\t python \n'
+s.lstrip()
+'python \n'
+s.rstrip()
+'\t python'
+s.strip()
+'python'
+
+9.字符串长度补齐为0
+a = ['15', '127', '65535']
+len_max = max([len(item) for item in a])
+for item in a:
+    print(item.zfill(len_max))         #返回指定长度的字符串，原字符串右对齐，前面填充0
+
+10.字符串提取字符
+ 'https://blog.csdn.net/xufive'.split('/',2)[0][:-1]
+
+11.将列表中各个元素 用 ‘ | ‘ 连接成一个字符串
+>>> '|'.join(['a','b','c'])
+'a|b|c'
+
+12.将字符串中插入‘-’，生成新的字符串
+>>> '-'.join('abc4')
+'a-b-c-4'
+
+13.二进制数转换十进制
+>>> 0b0101
+5
+
+14.交换变量 x 和 y 的值
+>>> x, y = 3, 4
+>>> x, y = y, x
+>>> x
+4
+>>> y
+3
+
+15. 判断参数类型
+>>> a = 2
+>>> type(a) == int
+True
+>>> isinstance(a, int)
+True
+
+16.检查字符串是否是以指定子字符串开头
+ def get_url_start(url):
+    if url.startswith(('http://','https://')):
+        return url.split(':')[0]
+    else:
+        return False
+
+17.检查字符串是否是以指定子字符串结尾
+def get_url_end(url):
+    if url.endswith(('.com','.net')):
+        return url.split('.')[-1]
+    else:
+        return False
+
+18. 计算字符串表达式的值
+eval('(2+3)*5')
+25
+eval() 函数用来执行一个字符串表达式，并返回表达式的值
