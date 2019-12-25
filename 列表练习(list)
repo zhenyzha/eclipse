@@ -64,8 +64,9 @@ a
 
 8.编历列表['b', 'd', 'e', 'c', 'k'], 打印每个元素及其对应索引号
 a = ['b', 'd', 'e', 'c', 'k']
-for index, value in enumerate(a):
+for index, value in enumerate(a):        #遍历的数据对象(如列表、元组或字符串)组合为一个索引序列，返回 enumerate(枚举) 对象。
     print('index={}, value={}'.format(index, value))
+或   print('index=%s,value=%s'% (index,value)) 
     
 index=0, value=b
 index=1, value=d
@@ -89,7 +90,8 @@ d = {'A': 20, 'B': 28, 'C': 21}
 [key for key in d.values()]
 [20, 28, 21]
 
-11.去除列表中重复的元素
+11.去除列表[1,2,4,5,2,3,1,'x',3,'x']中重复的元素
+   找出'runoob'，'google'中重复的元素
 a = [1,2,4,5,2,3,1,'x',3,'x']
 list(set(a))         #设定设定成一个无序不重复元素集，可计算交集、差集、并集等
 [1, 2, 3, 4, 5, 'x']
@@ -105,11 +107,11 @@ set(['b', 'e', 'g', 'l', 'o', 'n', 'r', 'u'])
 set(['r', 'b', 'u', 'n'])
 >>>
 
-12.将列表中三个英文字符串分行打印，实现左对其 或 居中对其
+12.将列表['ha','hello','fine thanks']中三个英文字符串分行打印，实现左对其 或 居中对其
 a = ['ha','hello','fine thanks']
 len_max = max(len(item) for item in a)   #取最长字符串长度
 for item in a:
-    print('"%s"' % item.ljust(len_max))     #按多长打印一个字符串
+    print('"%s"' % item.ljust(len_max))     #按多长打印一个字符串，ljust左对其
     
 "ha         "
 "hello      "
