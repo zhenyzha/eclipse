@@ -24,7 +24,7 @@ a = [7,1,2,3,4,5,6,7]
 a.count(7)
 注意count不区分“True 和 1”  “False 和 0”，会当成一个值统计
 
-4.从列表中删除某个值
+4.从列表[1,0,x,x,3,4,5,x]中删除x
 a = [1,0,x,x,3,4,5,x]
 for i in range(a.count('x')):   #range() 函数可创建一个整数列表
     a.remove('x')
