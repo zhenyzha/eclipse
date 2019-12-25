@@ -123,7 +123,7 @@ for item in a:
    hello   
 fine thanks
 
-13.交互取值，列表取值，分组打印
+13.写个记录手机号函数，按3，4，4位数打印
 >>> def print_mobile():
 ...     num = input('请输入手机号码: ')
 ...     print('Mobile: %s %s %s'%(num[:3], num[3:7], num[7:]))
@@ -136,11 +136,11 @@ Mobile: 123 4567 8901
  [bool(item) for item in [0 , 1 , 'x' , None , '' , list() , {2:1} ]]
 [False, True, True, False, False, False, True]
 
-15.将列表[3,'a',5.2,{},9,[]]]中大于3的整数或浮点数设置为1， 其余设置为0.
+15.将列表[3,'a',5.2,{},9,[]]中大于3的整数或浮点数设置为1， 其余设置为0.
 [1 if isinstance(item,(int,float)) and item>3 else 0 for item in [3,'a',5.2,{},9,[]]]
 [0, 0, 1, 0, 1, 0]
 
-16.统计列表中出现次数最多的数，并且统计出现次数
+16.统计列表[8,5,2,4,3,5,6,3,8,2,1,2]中出现次数最多的数，并且统计出现次数
 a = [8,5,2,4,3,5,6,3,8,2,1,2]
 v_max = max(set(a),key=a.count)
 v_max
@@ -148,13 +148,13 @@ v_max
 a.count(v_max)
 3
 
-17.将等长的键列表和值列表转换为字典
+17.将等长的键列表['a','b','c']和值列表[3,4,5]转换为字典
 keys = ['a','b','c']
 values = [3,4,5]
 dict(zip(keys,values))
 {'a': 3, 'b': 4, 'c': 5}
 
-18.生成随机小数列表并求和，四舍五入保留两位小数
+18.生成随机小数列表（5个元素）并求和，四舍五入保留两位小数
 import random
 a = [random.random() for i in range(5)]
 a
