@@ -34,6 +34,10 @@ return:
 Found "this"
 in "Does this text match the pattern?"
 from 5 to 9 ("this")
+
+
+查找字符串输出中的数字
+re.search("\d{9,}", output).group(0)
 =======================================================================
 # re.compile(p)全文匹配
 regexes = [
