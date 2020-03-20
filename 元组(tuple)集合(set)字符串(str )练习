@@ -178,3 +178,7 @@ def get_url_end(url):
 eval('(2+3)*5')
 25
 eval() 函数用来执行一个字符串表达式，并返回表达式的值
+
+19. 当cfg中有指定字符串时进行替换，否则按cfg或取。
+params["irq_pattern"].format(ifname=guest_ifname)
+cfg: irq_pattern = "{ifname}" 
