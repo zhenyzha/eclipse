@@ -184,3 +184,9 @@ True
 #map 
 #Python 2.x 返回列表。
 #Python 3.x 返回迭代器。
+
+21.列表copy [:] 
+#注意：在使用for循环对其进行迭代时，不允许从列表中删除元素。
+ for i in test_list[:]:
+    if re.search('\d+.[a-z]', i):
+       test_list.remove(i)
