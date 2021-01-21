@@ -1,21 +1,53 @@
 #!/usr/bin/python3
 #函数的本质是赋值运算
-#接口函数描述规范
-def set_temperature(self, temp):
-    """Set the temperature value.   标题
+#为什么需要接口函数？
+#code 层级调用是通过接口函数，接口函数从调用出生效 传值
+#最后自查调用是否生效,一定要充分验证所有情况，比如bool有三种情况，yes no 不写
+#例 https://github.com/avocado-framework/avocado-vt/pull/2893
 
-    The value of the temp parameter is stored as a value in
-    the class variable temperature. The given value is converted
-    into a float value if not yet done.
+qdevices ----> qcontainer(向外暴露接口函数) ----> tp-qemu cfg
 
-    :param temp: the temperature value
-    :type temp: float
-    :return: no value
-    :rtype: none
-    """
+def __init__(self, aobject, binary, sock_path, source, extra_options=None,
+                 enable_debug_mode=False):
+    super(QVirtioFSDev, self).__init__('virtiofs', aobject=aobject,
+                                           child_bus=QUnixSocketBus(sock_path, aobject))
+    self.set_param('enable_debug_mode', enable_debug_mode) # 这里查看set_param 返回  =====> def set_param(self, option, value, option_type=None, dynamic=False):
+    
+=====================================================================  
+def set_param(self, option, value, option_type=None, dynamic=False):
+    if dynamic:
+        if option not in self.dynamic_params:
+            self.dynamic_params.append(option)
+    else:
+        if option in self.dynamic_params:
+            self.dynamic_params.remove(option)
 
-    self.temperature = float(temp)
-    return
+    if option_type is bool or isinstance(value, bool):   ====================> #(enable_debug_mode 我们在上面写的预期是bool 类型=False，所有在此生效)
+        if value in ['yes', 'on', True]:
+            self.params[option] = "on"
+        elif value in ['no', 'off', False]:              ====================> #（返回值为"off") 
+            self.params[option] = "off"
+
+=====================================================================  
+#知道了enable_debug_mode 默认返回值为"off"后， 当我们从底层获取什么时发生改变？
+#定义== "on"时
+    def start_daemon(self):
+        if self.get_param('enable_debug_mode') == "on":
+            fsd_cmd += ' -d'
+=====================================================================
+这里 == "on" 不是直接从底层获取，注意层级关系，设置下层'qcontainer.py'接口函数
+enable_debug_mode = params.get('fs_enable_debug_mode', 'no')  ====================> #（这里定义了对底层的获取接口名称'fs_enable_debug_mode'，并给定默认值) 
+
+   def fs_define_by_params(self, name, params, bus=None):
+        devices = []
+        enable_debug_mode = params.get('fs_enable_debug_mode', 'no') == "yes"  ====================> #（这里设定成符合上层的bool类型，并且只有底层 == "yes" 时才为True
+                    sock_path = os.path.join(data_dir.get_tmp_dir(),
+                                             '-'.join((self.vmname, name, 'virtiofsd.sock')))
+                    vfsd = qdevices.QVirtioFSDev(name, binary, sock_path,
+                                                 source, extra_options, enable_debug_mode) ====================> #（记得传给上层 qdevices）
+                    devices.append(vfsd)
+    
+    
 
 def get_qdev_by_drive(self, device):
     """
@@ -39,19 +71,19 @@ def zzy(a, b):
     print(f"you have {b}")
     print("get a blanket.\n")
 
-print("show:1")
+1:
 zzy(20, 30)
 
-print("show:2")
+2:
 a = 10
 b = 20
 
 zzy(a, b)
 
-print("show:3")
+3:
 zzy(10 + 20, 5 + 6)
 
-print("show:4")
+4:
 zzy(a + 100, b + 1000)
 
 --------------------------------------------------------------------------------------------------------------
