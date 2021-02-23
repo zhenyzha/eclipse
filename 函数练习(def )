@@ -187,6 +187,7 @@ print(f"{words1}")
 print(f"{words2}")
 
 --------------------------------------------------------------------------------------------------------------
+#函数范例6：
 #添加进程锁
 import time
 import threading
@@ -221,6 +222,7 @@ if __name__ == '__main__':
     demo()
 
 ----------------------------------------------------------------------------------------------------------
+#函数范例7：
 1. 写一个函数传参打印30次，每次间隔0.1秒
 import time
 
@@ -239,3 +241,27 @@ map(square, [1,2,3,4,5])
 <map object at 0x7fdaa450a8d0>
 [_ for _ in map(square, [1,2,3,4,5])]
 [1, 4, 9, 16, 25]
+
+----------------------------------------------------------------------------------------------------------
+#函数范例8：
+将函数作为一个参数，传给其他函数
+import re
+states = ['  Alabama ', 'GFjjk!', 'Fjkk', 'ggeger', 'FloRod', 'south carol##', 'West vir?']
+
+def remove_punctuation(value):  #写一个函数方法,替换字符串中的匹配项              
+    return re.sub('[!#?]', '', value)
+  
+clean_ops = [str.strip, remove_punctuation, str.title] #将所有要做的方法，放如一个列表中 
+[str.strip移除字符串头尾指定的字符（默认为空格或换行符）,  , str.title()所有单词都是以大写开始]
+
+def clean_strings(strings, ops):  #写一个方法调用的函数
+    result = []
+    for value in strings:
+        for function in ops:
+            value = function(value) # 分别将字符串进行上述三种方法处理
+        result.append(value)
+    return result
+
+示例：  
+clean_strings(states, clean_ops)
+Out[7]: ['Alabama', 'Gfjjk', 'Fjkk', 'Ggeger', 'Florod', 'South Carol', 'West Vir']
