@@ -265,3 +265,13 @@ def clean_strings(strings, ops):  #写一个方法调用的函数
 示例：  
 clean_strings(states, clean_ops)
 Out[7]: ['Alabama', 'Gfjjk', 'Fjkk', 'Ggeger', 'Florod', 'South Carol', 'West Vir']
+  
+----------------------------------------------------------------------------------------------------------
+#函数范例9：
+密名函数, 其结果为返回值。
+def short_fun(x):
+  return x * 2
+
+equiv_anon = lambda x: x * 2
+
+
