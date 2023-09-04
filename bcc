@@ -1,0 +1,49 @@
+============= 1.icache inval use time =============
+from bcc import BPF
+from bcc.utils import printb
+
+program="""
+
+BPF_HASH(last);
+
+int do_trace(struct pt_regs *ctx) {
+    u64 ts, key = 0;
+
+    ts = bpf_ktime_get_ns();
+
+    last.update(&key, &ts);
+    return 0;
+}
+
+int ret_trace(struct pt_regs *ctx) {
+    u64 ts, *tsp, key = 0, delta;
+
+    tsp = last.lookup(&key);
+    if (tsp != NULL) {
+        delta = bpf_ktime_get_ns() - *tsp;
+        bpf_trace_printk("%d", delta);
+    }
+
+    return 0;
+}
+
+"""
+
+b = BPF(text=program)
+# sync = b.get_syscall_fnname("sync")
+b.attach_kprobe(event="invalidate_icache_guest_page", fn_name="do_trace")
+b.attach_kretprobe(event="invalidate_icache_guest_page", fn_name="ret_trace")
+print("Tracing for quick sync's... Ctrl-c to end")
+
+start = 0
+while 1:
+    try:
+        (task, pid, cpu, flags, ts, ms) = b.trace_fields()
+        if start == 0:
+            start = ts
+        ts = ts - start
+        printb(b"At time %.2f s: cpu %d: icache inval use %s ms" % (ts, cpu, ms))
+    except KeyboardInterrupt:
+        exit()
+
+        
